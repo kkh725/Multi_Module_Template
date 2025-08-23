@@ -1,29 +1,34 @@
 package com.kkh.multimodule.feature.test
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.kkh.multimodule.domain.repository.TestRepository
+import com.kkh.multimodule.BaseViewModel
+import com.kkh.multimodule.CommonEffect
+import com.kkh.multimodule.SideEffect
+import com.kkh.multimodule.domain.repository.HistoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
-import kotlinx.coroutines.launch
 
 @HiltViewModel
-class TestViewModel @Inject constructor(private val testRepository: TestRepository) : ViewModel() {
+class TestViewModel @Inject constructor(private val historyRepository: HistoryRepository) :
+    BaseViewModel<TestState, TestEvent, SideEffect>(reducer = TestReducer(TestState.init())) {
 
-    private val reducer = TestReducer(TestState.init())
-    val uiState get() = reducer.uiState
-
-    fun sendEvent(e: TestEvent) {
-        when (e) {
-            TestEvent.ClickedButton -> {
-                testFunction()
+    override suspend fun processEvent(event: TestEvent) {
+        super.processEvent(event)
+        when (event) {
+            is TestEvent.ClickedButton -> {
+                getTimerHistories("userId", "startDate", "endDate")
             }
+
+            else -> {}
         }
     }
 
-    private fun testFunction() {
-        viewModelScope.launch {
-            testRepository.localDoit()
-        }
+    private suspend fun getTimerHistories(userId: String, startDate: String, endDate: String) {
+        historyRepository.getTimerHistories(userId, startDate, endDate)
+            .onSuccess { }
+            .onFailure { throwable ->
+                sendEffect(CommonEffect.ShowSnackBar("${throwable.message}"))
+                sendEffect(TestSideEffect.NavigateToHome)
+            }
+
     }
 }

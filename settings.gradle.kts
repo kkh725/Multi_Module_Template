@@ -31,14 +31,11 @@ dependencyResolutionManagement {
 
 rootProject.name = "moduletest"
 include(":app")
-//include(":core")
-include(":core:data")
-//include(":mylibrary")
-//include(":mylibrary:mylibrary")
-//include(":build-logic")
-//include(":build-logic:convention")
-include(":feature")
+
+include(":feature:test")
+
 include(":core:network")
 include(":core:datastore")
-include(":feature:test")
 include(":core:domain")
+include(":core:data")
+include(":core:common")

@@ -9,6 +9,7 @@ import com.kkh.multimodule.datastore.DataStoreManagerImpl
 import com.kkh.multimodule.datastore.DataStoreManager
 import com.kkh.multimodule.datastore.datasource.LocalDataSource
 import com.kkh.multimodule.datastore.datasource.LocalDataSourceImpl
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,12 +34,5 @@ object DataStoreModule {
     @Singleton
     internal fun provideDataStoreManager(dataStore: DataStore<Preferences>) : DataStoreManager {
         return DataStoreManagerImpl(dataStore)
-    }
-
-    // LocalDataSource 만 외부에서 주입해 사용.
-    @Provides
-    @Singleton
-    fun provideLocalDataSource(dataStoreManager: DataStoreManager) : LocalDataSource {
-        return LocalDataSourceImpl(dataStoreManager)
     }
 }

@@ -1,38 +1,49 @@
 package com.kkh.multimodule.network.di
 
-import com.kkh.multimodule.network.api.TestApi
-import com.kkh.multimodule.network.datasource.TestDataSource
-import com.kkh.multimodule.network.datasource.TestDataSourceImpl
+import com.kkh.multimodule.network.BuildConfig
+import com.kkh.multimodule.network.api.HistoryApi
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal object NetworkModule {
+object NetworkModule {
 
     @Provides
     @Singleton
-    internal fun provideTestApi(@TestApi3 retrofit: Retrofit): TestApi {
-        return retrofit.create(TestApi::class.java)
+    fun provideHistoryApi(retrofit: Retrofit): HistoryApi {
+        return retrofit.create(HistoryApi::class.java)
     }
 
     @Provides
     @Singleton
-    internal fun provideTestApi2(@TestApi2 retrofit: Retrofit): TestApi2 {
-        return retrofit.create(TestApi2::class.java)
+    fun provideOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            })
+            .build()
     }
 
-    //최종적으로 TestDataSource 만 공개함.
     @Provides
     @Singleton
-    fun provideTestDataSource(testApi: TestApi) : TestDataSource {
-        return TestDataSourceImpl(testApi)
+    fun provideRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.KKH_SERVER_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(provideOkHttpClient())
+            .build()
     }
-
 }
+
+
 
 

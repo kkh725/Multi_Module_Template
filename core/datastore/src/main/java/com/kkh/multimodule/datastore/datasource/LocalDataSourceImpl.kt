@@ -8,7 +8,7 @@ import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 
-internal class LocalDataSourceImpl @Inject constructor(private val dataStoreManager: DataStoreManager) :
+class LocalDataSourceImpl @Inject constructor(private val dataStoreManager: DataStoreManager) :
     LocalDataSource {
 
     private val keyString = stringPreferencesKey("CUSTOM_TEXT")
@@ -28,6 +28,5 @@ internal class LocalDataSourceImpl @Inject constructor(private val dataStoreMana
     override fun observeCustomText(): Flow<String> {
         return dataStoreManager.readString(keyString)
     }
-
 
 }
