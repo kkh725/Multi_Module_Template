@@ -24,8 +24,8 @@ internal fun Project.configureKotlinAndroid(
 
         compileOptions {
             isCoreLibraryDesugaringEnabled = true
-            sourceCompatibility = JavaVersion.VERSION_11
-            targetCompatibility = JavaVersion.VERSION_11
+            sourceCompatibility = JavaVersion.VERSION_17
+            targetCompatibility = JavaVersion.VERSION_17
         }
     }
 
@@ -38,13 +38,13 @@ internal fun Project.configureKotlinAndroid(
 
 /**
  * kotlinOptions {
- *         jvmTarget = "11"
+ *         jvmTarget = "17"
  *     } 와 같음.
  */
 private fun Project.configureKotlin() {
     tasks.withType<KotlinCompile>().configureEach {
         compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
         }
     }
 }
