@@ -24,11 +24,13 @@ class TestViewModel @Inject constructor(private val historyRepository: HistoryRe
 
     private suspend fun getTimerHistories(userId: String, startDate: String, endDate: String) {
         historyRepository.getTimerHistories(userId, startDate, endDate)
-            .onSuccess { }
+            .onSuccess {
+                sendEffect(CommonEffect.ShowDialog(true))
+                sendEffect(TestSideEffect.NavigateToHome)
+            }
             .onFailure { throwable ->
                 sendEffect(CommonEffect.ShowSnackBar("${throwable.message}"))
                 sendEffect(TestSideEffect.NavigateToHome)
             }
-
     }
 }

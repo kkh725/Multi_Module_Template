@@ -24,7 +24,7 @@ fun TestScreen(
     testViewModel: TestViewModel = hiltViewModel(),
     onClickButtonTonNavigate: () -> Unit
 ) {
-    val a = rememberNavController()
+    val navController = rememberNavController()
 
     val uiState by testViewModel.uiState.collectAsState()
     val snackBarHostState = remember { SnackbarHostState() }
@@ -46,7 +46,6 @@ fun TestScreen(
         Column(modifier = Modifier.padding(paddingValues)) {
             Button(onClick = {
                 testViewModel.sendEvent(TestEvent.ClickedButton)
-                onClickButtonTonNavigate()
             }) {
                 Text(
                     "Button!"
