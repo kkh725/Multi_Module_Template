@@ -39,3 +39,5 @@ include(":core:datastore")
 include(":core:domain")
 include(":core:data")
 include(":core:common")
+include(":core:database")
+

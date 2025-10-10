@@ -18,6 +18,8 @@ kotlin {
 dependencies{
     implementation(libs.android.gradle.plugin)
     implementation(libs.kotlin.gradle.plugin)
+    compileOnly(libs.room.gradle.plugin)
+    compileOnly(libs.ksp.gradlePlugin)
 }
 
 gradlePlugin {
@@ -40,6 +42,11 @@ gradlePlugin {
         register("androidLibrary") {
             id = libs.plugins.multi.module.library.get().pluginId
             implementationClass = "com.kkh.multimodule.convention.AndroidLibraryConventionPlugin"
+        }
+
+        register("androidRoom") {
+            id = libs.plugins.multi.module.room.get().pluginId
+            implementationClass = "com.kkh.multimodule.convention.AndroidRoomConventionPlugin"
         }
     }
 }
