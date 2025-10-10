@@ -10,6 +10,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:common"))
 
     // Test dependencies
     testImplementation(libs.junit)

@@ -2,6 +2,8 @@ package com.kkh.multimodule.data.repository
 
 import android.util.Log
 import com.kkh.multimodule.data.mapper.toDomain
+import com.kkh.multimodule.database.dao.UserDao
+import com.kkh.multimodule.database.entity.UserEntry
 import com.kkh.multimodule.datastore.datasource.LocalDataSource
 import com.kkh.multimodule.domain.model.HistoryModel
 import com.kkh.multimodule.domain.repository.HistoryRepository
@@ -10,9 +12,14 @@ import com.kkh.multimodule.network.dto.response.processApiResponse
 import jakarta.inject.Inject
 
 class HistoryRepositoryImpl @Inject constructor(
+    private val userDao: UserDao,
     private val localDataSource: LocalDataSource,
     private val historyDataSource: HistoryDataSource
 ) : HistoryRepository {
+
+    private suspend fun getUserId(): UserEntry? {
+        return userDao.getById(123123)
+    }
 
     override suspend fun localDoit() {
         localDataSource.getCustomText()
