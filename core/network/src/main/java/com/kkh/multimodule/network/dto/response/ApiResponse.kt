@@ -3,7 +3,7 @@ package com.kkh.multimodule.network.dto.response
 import android.util.Log
 import retrofit2.Response
 
-data class ApiResponse<T>(
+data class BaseResponse<T>(
     val result : String,
     val data : T?,
     val code : Int,
@@ -12,6 +12,8 @@ data class ApiResponse<T>(
         return code == 200
     }
 }
+
+typealias ApiResponse<T> = Response<BaseResponse<T>>
 
 enum class HttpErrorStatus(val code: Int, val message: String){
     UNAUTHORIZED(401, "인증 오류가 발생했습니다."),
@@ -32,7 +34,7 @@ fun handleHttpError(code: Int): Exception {
     }
 }
 
-inline fun <reified T> Response<ApiResponse<T>>.processApiResponse(): T {
+inline fun <reified T> ApiResponse<T>.processApiResponse(): T {
     if (this.isSuccessful) {
         val body = this.body() ?: throw NullPointerException(HttpErrorStatus.INTERNAL_SERVER_ERROR.message)
 

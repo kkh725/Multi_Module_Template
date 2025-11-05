@@ -4,6 +4,7 @@ import com.kkh.multimodule.network.api.HistoryApi
 import com.kkh.multimodule.network.dto.request.HistoryRequest
 import com.kkh.multimodule.network.dto.response.ApiResponse
 import com.kkh.multimodule.network.dto.response.HistoryResponse
+import com.kkh.multimodule.network.dto.response.processApiResponse
 import jakarta.inject.Inject
 import retrofit2.Response
 
@@ -13,8 +14,8 @@ class HistoryDataSourceImpl @Inject constructor(private val historyApi: HistoryA
         userId: String,
         startDate: String,
         endDate: String
-    ): Response<ApiResponse<HistoryResponse>> {
+    ): HistoryResponse {
         val request = HistoryRequest(userId, startDate, endDate)
-        return historyApi.getTimerHistories(request)
+        return historyApi.getTimerHistories(request).processApiResponse()
     }
 }

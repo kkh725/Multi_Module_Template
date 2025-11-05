@@ -10,9 +10,7 @@ import retrofit2.http.GET
 
 interface HistoryApi {
     @GET("/api/timer-histories/me")
-    suspend fun getTimerHistories(
-        @Body historyRequest: HistoryRequest
-    ): Response<ApiResponse<HistoryResponse>>
+    suspend fun getTimerHistories(@Body historyRequest: HistoryRequest): ApiResponse<HistoryResponse>
 }
 
 
