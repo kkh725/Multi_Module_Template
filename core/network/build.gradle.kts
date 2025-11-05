@@ -1,5 +1,4 @@
 plugins {
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.multi.module.library)
     alias(libs.plugins.multi.module.network)
     alias(libs.plugins.multi.module.hilt)

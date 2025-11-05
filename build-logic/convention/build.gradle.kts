@@ -40,9 +40,25 @@ gradlePlugin {
                 "com.kkh.multimodule.convention.AndroidApplicationConventionPlugin"
         }
 
+        register("androidLibraryCompose") {
+            id = libs.plugins.multi.module.android.library.compose.get().pluginId
+            implementationClass = "com.kkh.multimodule.convention.AndroidLibraryComposeConventionPlugin"
+        }
+
+        register("androidLibrary") {
+            id = libs.plugins.multi.module.library.get().pluginId
+            implementationClass =
+                "com.kkh.multimodule.convention.AndroidLibraryConventionPlugin"
+        }
+
         register("androidFeature") {
             id = libs.plugins.multi.module.android.feature.get().pluginId
             implementationClass = "com.kkh.multimodule.convention.AndroidFeatureConventionPlugin"
+        }
+
+        register("androidTest") {
+            id = libs.plugins.multi.module.android.test.get().pluginId
+            implementationClass = "com.kkh.multimodule.convention.AndroidTestConventionPlugin"
         }
 
         register("hilt") {
@@ -53,12 +69,6 @@ gradlePlugin {
         register("network") {
             id = libs.plugins.multi.module.network.get().pluginId
             implementationClass = "com.kkh.multimodule.convention.NetWorkConventionPlugin"
-        }
-
-        register("androidLibrary") {
-            id = libs.plugins.multi.module.library.get().pluginId
-            implementationClass =
-                "com.kkh.multimodule.convention.AndroidLibraryConventionPlugin"
         }
 
         register("androidRoom") {
