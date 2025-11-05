@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.multi.module.hilt)
+    alias(libs.plugins.multi.module.android.feature)
 }
 
 android {

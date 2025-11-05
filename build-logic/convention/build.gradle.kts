@@ -15,18 +15,34 @@ kotlin {
 }
 
 //org. gradle import를 위한 의존성.
-dependencies{
+dependencies {
     implementation(libs.android.gradle.plugin)
     implementation(libs.kotlin.gradle.plugin)
+    implementation(libs.compose.compiler.gradle.plugin)
+    implementation(libs.jetbrains.kotlin.gradle.plugin)
+    implementation(libs.kotlinx.serialization)
+
     compileOnly(libs.room.gradle.plugin)
     compileOnly(libs.ksp.gradlePlugin)
 }
 
 gradlePlugin {
     plugins {
+        register("androidApplicationCompose") {
+            id = libs.plugins.multi.module.android.compose.get().pluginId
+            implementationClass =
+                "com.kkh.multimodule.convention.AndroidApplicationComposeConventionPlugin"
+        }
+
         register("androidApplication") {
             id = libs.plugins.multi.module.android.application.get().pluginId
-            implementationClass = "com.kkh.multimodule.convention.AndroidApplicationConventionPlugin"
+            implementationClass =
+                "com.kkh.multimodule.convention.AndroidApplicationConventionPlugin"
+        }
+
+        register("androidFeature") {
+            id = libs.plugins.multi.module.android.feature.get().pluginId
+            implementationClass = "com.kkh.multimodule.convention.AndroidFeatureConventionPlugin"
         }
 
         register("hilt") {
@@ -41,7 +57,8 @@ gradlePlugin {
 
         register("androidLibrary") {
             id = libs.plugins.multi.module.library.get().pluginId
-            implementationClass = "com.kkh.multimodule.convention.AndroidLibraryConventionPlugin"
+            implementationClass =
+                "com.kkh.multimodule.convention.AndroidLibraryConventionPlugin"
         }
 
         register("androidRoom") {
