@@ -4,20 +4,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.kkh.multimodule.feature.test.navigation.TestRoute
-import com.kkh.multimodule.feature.test.navigation.navigateToTest
-import com.kkh.multimodule.feature.test.navigation.testScreen
+import com.kkh.multimodule.feature.test.TestRoute
+import com.kkh.multimodule.feature.test.navigation.testNavigation
+import com.kkh.multimodule.navigaiton.AuthGraphBaseRoute
 
 @Composable
-fun TestNavHost(
+fun TestAppNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
 ) {
     NavHost(
         navController = navController,
-        startDestination = TestRoute.ROUTE,
+        startDestination = AuthGraphBaseRoute,
         modifier = modifier,
     ) {
-        testScreen (onClickButtonToNavigate = navController::navigateToTest)
+        testNavigation()
     }
 }

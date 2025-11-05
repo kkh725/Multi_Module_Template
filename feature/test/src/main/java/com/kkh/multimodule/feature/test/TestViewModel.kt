@@ -1,36 +1,26 @@
 package com.kkh.multimodule.feature.test
 
-import com.kkh.multimodule.BaseViewModel
-import com.kkh.multimodule.CommonEffect
-import com.kkh.multimodule.SideEffect
+import com.kkh.multimodule.base.BaseViewModel
 import com.kkh.multimodule.domain.repository.HistoryRepository
+import com.kkh.multimodule.feature.test.contract.TestContract.TestEvent
+import com.kkh.multimodule.feature.test.contract.TestContract.TestState
+import com.kkh.multimodule.navigaiton.AuthGraphBaseRoute
+import com.kkh.multimodule.navigaiton.NavigationEvent.To
+import com.kkh.multimodule.navigaiton.NavigationHelper
+
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 
 @HiltViewModel
-class TestViewModel @Inject constructor(private val historyRepository: HistoryRepository) :
-    BaseViewModel<TestState, TestEvent, SideEffect>(reducer = TestReducer(TestState.init())) {
+class TestViewModel @Inject constructor(
+    private val historyRepository: HistoryRepository,
+    private val navigationHelper: NavigationHelper
+) : BaseViewModel<TestState, TestEvent>(initialState = TestState()) {
 
     override suspend fun processEvent(event: TestEvent) {
-        super.processEvent(event)
         when (event) {
-            is TestEvent.ClickedButton -> {
-                getTimerHistories("userId", "startDate", "endDate")
-            }
-
-            else -> {}
+            is TestEvent.OnButtonClick -> navigationHelper.navigate(To(AuthGraphBaseRoute))
+            is TestEvent.OnNewMatchingCardClick -> {}
         }
-    }
-
-    private suspend fun getTimerHistories(userId: String, startDate: String, endDate: String) {
-        historyRepository.getTimerHistories(userId, startDate, endDate)
-            .onSuccess {
-                sendEffect(CommonEffect.ShowDialog(true))
-                sendEffect(TestSideEffect.NavigateToHome)
-            }
-            .onFailure { throwable ->
-                sendEffect(CommonEffect.ShowSnackBar("${throwable.message}"))
-                sendEffect(TestSideEffect.NavigateToHome)
-            }
     }
 }

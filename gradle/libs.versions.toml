@@ -1,6 +1,7 @@
 [versions]
 agp = "8.13.0"
 kotlin = "2.2.0"
+kotlinxSerializationJson = "1.9.0"
 composeCompilerGradlePlugin = "2.2.0"
 coreKtx = "1.17.0"
 junit = "4.13.2"
@@ -15,6 +16,7 @@ jetbrainsKotlinJvm = "2.2.0"
 appcompat = "1.7.1"
 material = "1.13.0"
 navigationComposeAndroid = "2.9.5"
+androidxNavigation = "2.9.5"
 
 #hilt
 hilt = "2.57.2"
@@ -74,6 +76,7 @@ androidx-material3-adaptive = { group = "androidx.compose.material3.adaptive", n
 androidx-material3-adaptive-layout = { group = "androidx.compose.material3.adaptive", name = "adaptive-layout", version.ref = "androidxComposeMaterial3Adaptive" }
 androidx-material3-adaptive-navigation = { group = "androidx.compose.material3.adaptive", name = "adaptive-navigation", version.ref = "androidxComposeMaterial3Adaptive" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "androidxNavigation" }
 androidx-navigation-compose-android = { group = "androidx.navigation", name = "navigation-compose-android", version.ref = "navigationComposeAndroid" }
 
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
@@ -120,6 +123,8 @@ compose-compiler-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compil
 
 #serialization
 kotlinx-serialization = { group = "org.jetbrains.kotlin", name = "kotlin-serialization", version.ref = "kotlin" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+
 
 #coil
 coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }

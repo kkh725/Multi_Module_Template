@@ -40,5 +40,5 @@ include(":core:domain")
 include(":core:data")
 include(":core:common")
 include(":core:database")
-
 include(":core:designsystem")
+include(":core:navigation")
