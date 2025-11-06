@@ -42,6 +42,14 @@ coil = "2.7.0"
 #room
 room = "2.8.3"
 
+# stability
+# https://github.com/skydoves/compose-stability-analyzer?tab=readme-ov-file
+stability = "0.4.0"
+
+# immutable
+# https://github.com/Kotlin/kotlinx.collections.immutable
+immutable = "0.4.0"
+
 # Project versions
 projectApplicationId = "com.kkh.multimodule.moduletest"
 projectVersionName = "1.0.0"
@@ -125,12 +133,13 @@ compose-compiler-gradle-plugin = { module = "org.jetbrains.kotlin:compose-compil
 kotlinx-serialization = { group = "org.jetbrains.kotlin", name = "kotlin-serialization", version.ref = "kotlin" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 
-
 #coil
 coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 coil-kt-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
 
+#immutable collection
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "immutable" }
 # plugins ------------------------------------------------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------------------------------------------------
 
@@ -144,6 +153,9 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
+#compose stability
+stability-analyzer = { id = "com.github.skydoves.compose.stability.analyzer", version.ref = "stability" }
 
 #custom plugin
 multi-module-android-application = { id = "multi.module.android.application"}

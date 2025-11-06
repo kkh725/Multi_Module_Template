@@ -6,6 +6,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import kotlin.text.get
 
 internal fun Project.configureKotlinAndroid(
     commonExtension: CommonExtension<*, *, *, *, *, *>
@@ -32,6 +33,7 @@ internal fun Project.configureKotlinAndroid(
     configureKotlin()
 
     dependencies {
+        "implementation"(libs.findLibrary("kotlinx-collections-immutable").get())
         "coreLibraryDesugaring"(libs.findLibrary("desugar.jdk.libs").get())
     }
 }

@@ -14,6 +14,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
             apply(plugin = "multi.module-library")
             apply(plugin = "multi.module.hilt")
             apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
+            apply(plugin = "com.github.skydoves.compose.stability.analyzer")
 
             extensions.configure<LibraryExtension> {
                 testOptions.animationsDisabled = true
