@@ -44,11 +44,13 @@ room = "2.8.3"
 
 # stability
 # https://github.com/skydoves/compose-stability-analyzer?tab=readme-ov-file
-stability = "0.4.0"
+stability = "0.5.1"
 
 # immutable
 # https://github.com/Kotlin/kotlinx.collections.immutable
 immutable = "0.4.0"
+
+serialization = "1.7.3"
 
 # Project versions
 projectApplicationId = "com.kkh.multimodule.moduletest"

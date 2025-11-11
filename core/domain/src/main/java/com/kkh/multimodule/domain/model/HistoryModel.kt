@@ -1,5 +1,8 @@
 package com.kkh.multimodule.domain.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class HistoryModel(
     val id: Int,
     val timerId: Int,

@@ -1,6 +1,5 @@
 package com.kkh.multimodule.data.repository
 
-import com.kkh.multimodule.data.mapper.toDomain
 import com.kkh.multimodule.database.dao.UserDao
 import com.kkh.multimodule.database.entity.UserEntry
 import com.kkh.multimodule.datastore.datasource.LocalDataSource

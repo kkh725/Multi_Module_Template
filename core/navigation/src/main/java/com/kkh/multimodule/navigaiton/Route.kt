@@ -1,5 +1,6 @@
 package com.kkh.multimodule.navigaiton
 
+import com.kkh.multimodule.domain.model.HistoryModel
 import kotlinx.serialization.Serializable
 
 sealed interface Route
@@ -10,7 +11,7 @@ data object AuthGraphBaseRoute : Route
 // route -> 그래프 형식으로 묶여야 하는 경우
 sealed interface AuthGraph : Route {
     @Serializable
-    data object LoginRoute : AuthGraph
+    data class LoginRoute(val history: HistoryModel) : AuthGraph
 
     @Serializable
     data object VerificationRoute : AuthGraph
