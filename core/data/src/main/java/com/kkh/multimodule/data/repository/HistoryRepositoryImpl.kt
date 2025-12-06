@@ -3,7 +3,7 @@ package com.kkh.multimodule.data.repository
 import com.kkh.multimodule.database.dao.UserDao
 import com.kkh.multimodule.database.entity.UserEntry
 import com.kkh.multimodule.datastore.datasource.LocalDataSource
-import com.kkh.multimodule.domain.model.HistoryModel
+import com.kkh.multimodule.domain.model.history.HistoryModel
 import com.kkh.multimodule.domain.repository.HistoryRepository
 import com.kkh.multimodule.network.datasource.HistoryDataSource
 import jakarta.inject.Inject

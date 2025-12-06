@@ -1,6 +1,6 @@
 package com.kkh.multimodule.network.dto.response
 
-import com.kkh.multimodule.domain.model.HistoryModel
+import com.kkh.multimodule.domain.model.history.HistoryModel
 import kotlinx.serialization.Serializable
 
 @Serializable

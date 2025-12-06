@@ -43,11 +43,9 @@ coil = "2.7.0"
 room = "2.8.3"
 
 # stability
-# https://github.com/skydoves/compose-stability-analyzer?tab=readme-ov-file
 stability = "0.5.1"
 
 # immutable
-# https://github.com/Kotlin/kotlinx.collections.immutable
 immutable = "0.4.0"
 
 # serialization
@@ -62,6 +60,9 @@ projectTargetSdkVersion = "36"
 projectCompileSdkVersion = "36"
 
 desugar_jdk_libs = "2.1.5"
+
+# coroutine
+kotlinxCoroutine = "1.10.1"
 
 # libraries ------------------------------------------------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------------------------------------------------
@@ -143,6 +144,12 @@ coil-kt-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
 
 #immutable collection
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "immutable" }
+
+#coroutine
+coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutine" }
+coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutine" }
+coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutine" }
+
 # plugins ------------------------------------------------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------------------------------------------------
 

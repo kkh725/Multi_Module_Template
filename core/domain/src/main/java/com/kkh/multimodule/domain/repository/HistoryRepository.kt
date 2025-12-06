@@ -1,6 +1,6 @@
 package com.kkh.multimodule.domain.repository
 
-import com.kkh.multimodule.domain.model.HistoryModel
+import com.kkh.multimodule.domain.model.history.HistoryModel
 
 interface HistoryRepository {
     suspend fun localDoit() : String

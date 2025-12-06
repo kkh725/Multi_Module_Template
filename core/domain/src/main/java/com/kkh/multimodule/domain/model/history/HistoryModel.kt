@@ -1,4 +1,4 @@
-package com.kkh.multimodule.domain.model
+package com.kkh.multimodule.domain.model.history
 
 import kotlinx.serialization.Serializable
 
