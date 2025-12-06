@@ -16,7 +16,7 @@ fun TestAppNavHost(
 
     NavHost(
         navController = navController,
-        startDestination = AuthGraphBaseRoute,
+        startDestination = com.kkh.multimodule.navigaiton.TestRoute(-1),
         modifier = modifier,
     ) {
         testNavigation()

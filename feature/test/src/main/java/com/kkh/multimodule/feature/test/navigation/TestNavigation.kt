@@ -11,16 +11,6 @@ import com.kkh.multimodule.navigaiton.serializableType
 import kotlin.reflect.typeOf
 
 fun NavGraphBuilder.testNavigation() {
-    composable<AuthGraph.LoginRoute>(
-        typeMap = mapOf(
-            typeOf<HistoryModel>() to serializableType(
-                serializer = HistoryModel.serializer()
-            )
-        )
-    ) { backStackEntry ->
-        val vitalItem = backStackEntry.toRoute<AuthGraph.LoginRoute>().history
-        TestRoute {}
-    }
 
     composable<TestRoute> { TestRoute {} }
 }
