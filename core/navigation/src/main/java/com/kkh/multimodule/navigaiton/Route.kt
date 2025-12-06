@@ -11,7 +11,9 @@ data object AuthGraphBaseRoute : Route
 // route -> 그래프 형식으로 묶여야 하는 경우
 sealed interface AuthGraph : Route {
     @Serializable
-    data class LoginRoute(val history: HistoryModel) : AuthGraph
+    data class LoginRoute(val history: HistoryModel) : AuthGraph{
+        companion object { const val KEY_HISTORY = "history" }
+    }
 
     @Serializable
     data object VerificationRoute : AuthGraph
@@ -20,9 +22,10 @@ sealed interface AuthGraph : Route {
     data object SignUpRoute : AuthGraph
 }
 
-// 단일 route
 @Serializable
-data object TestRoute : Route
+data class TestRoute(val testId : Int) : Route {
+    companion object { const val KEY_TEST_ID = "testId" }
+}
 
 @Serializable
 data object PauseRoute : Route

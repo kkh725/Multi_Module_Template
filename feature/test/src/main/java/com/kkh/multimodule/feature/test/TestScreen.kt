@@ -20,8 +20,12 @@ fun TestRoute(
 
 @Composable
 fun Test(
-    uiState : TestState,
-    list : ImmutableList<String>,
+    a : StableClass
 ){
 
 }
+
+data class StableClass(
+    val list : ImmutableList<String>,
+    var str : String
+)
