@@ -64,6 +64,8 @@ desugar_jdk_libs = "2.1.5"
 # coroutine
 kotlinxCoroutine = "1.10.1"
 
+# junit5
+junitJupiter = "5.10.2"
 # libraries ------------------------------------------------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------------------------------------------------
 [libraries]
@@ -149,6 +151,9 @@ kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collec
 coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutine" }
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutine" }
 coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutine" }
+
+#junit5
+junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
 
 # plugins ------------------------------------------------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------------------------------------------------

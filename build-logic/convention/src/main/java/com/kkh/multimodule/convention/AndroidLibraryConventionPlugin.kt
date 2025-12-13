@@ -16,28 +16,48 @@ package com.kkh.multimodule.convention/*
 
 import com.android.build.gradle.LibraryExtension
 import com.kkh.multimodule.convention.extensions.configureKotlinAndroid
+import com.kkh.multimodule.convention.extensions.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
 
 class AndroidLibraryConventionPlugin : Plugin<Project> {
-    override fun apply(target: Project) {
-        with(target) {
-            apply(plugin = "com.android.library")
-            apply(plugin = "org.jetbrains.kotlin.android")
+    override fun apply(target: Project) = with(target) {
+        apply(plugin = "com.android.library")
+        apply(plugin = "org.jetbrains.kotlin.android")
 
-            extensions.configure<LibraryExtension> {
+        extensions.configure<LibraryExtension> {
+            configureKotlinAndroid(this)
 
-                configureKotlinAndroid(this)
+            defaultConfig.testInstrumentationRunner =
+                "androidx.test.runner.AndroidJUnitRunner"
 
-                defaultConfig.testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-                testOptions.animationsDisabled = true
+            testOptions.animationsDisabled = true
 
-                resourcePrefix =
-                    path.split("""\W""".toRegex()).drop(1).distinct().joinToString(separator = "_")
-                        .lowercase() + "_"
+            resourcePrefix =
+                path.split("""\W""".toRegex())
+                    .drop(1)
+                    .distinct()
+                    .joinToString("_")
+                    .lowercase() + "_"
+
+            testOptions {
+                unitTests.all {
+                    it.useJUnitPlatform()
+                }
             }
+        }
+
+        dependencies {
+            add("androidTestImplementation", libs.findLibrary("androidx-junit").get())
+            add("androidTestImplementation", libs.findLibrary("androidx-espresso-core").get())
+            add("testImplementation", "org.junit.jupiter:junit-jupiter:5.10.2")
+            add("implementation", "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+            add("testImplementation", "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+            add("testImplementation", "org.junit.platform:junit-platform-launcher")
         }
     }
 }
+

@@ -9,16 +9,20 @@ import com.kkh.multimodule.network.datasource.HistoryDataSource
 import jakarta.inject.Inject
 
 class HistoryRepositoryImpl @Inject constructor(
-    private val userDao: UserDao,
     private val localDataSource: LocalDataSource,
     private val historyDataSource: HistoryDataSource
 ) : HistoryRepository {
-    private suspend fun getUserId(): UserEntry? = userDao.getById(123123)
     override suspend fun localDoit() = localDataSource.getCustomText()
     override suspend fun getTimerHistories(
         userId: String,
         startDate: String,
         endDate: String
     ): Result<HistoryModel> =
-        runCatching { historyDataSource.getTimerHistories(userId, startDate, endDate).toDomain() }
+        runCatching {
+            val res = historyDataSource.getTimerHistories(userId, startDate, endDate).toDomain()
+
+            localDataSource.saveCustomText(res.userId)
+
+            res
+        }
 }

@@ -79,7 +79,7 @@ fun TestBottomSheetPreview() {
         ) {
             Text(
                 text = "Main Content",
-                color = Color.Black,
+                color = Color.White,
                 modifier = Modifier.padding(24.dp)
             )
         }

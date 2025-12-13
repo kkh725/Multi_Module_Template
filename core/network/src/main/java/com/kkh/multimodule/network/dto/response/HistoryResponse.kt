@@ -18,6 +18,23 @@ data class HistoryResponse(
     val startTime: String,
     val endTime: String
 ) {
+    companion object {
+        val mock = HistoryResponse(
+            id = 1,
+            timerId = 101,
+            userId = "user_001",
+            title = "Study Session",
+            focusTypeId = 2,
+            repeatCycleCode = "DAILY",
+            repeatDays = "Mon,Tue,Wed",
+            historyDt = "2025-12-11",
+            historyStatus = "COMPLETED",
+            failReason = null,
+            startTime = "09:00",
+            endTime = "10:00"
+        )
+    }
+
     fun toDomain() = HistoryModel(
         id = this.id,
         timerId = this.timerId,
