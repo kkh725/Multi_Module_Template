@@ -51,9 +51,14 @@ gradlePlugin {
                 "com.kkh.multimodule.convention.AndroidLibraryConventionPlugin"
         }
 
-        register("androidFeature") {
-            id = libs.plugins.multi.module.android.feature.get().pluginId
-            implementationClass = "com.kkh.multimodule.convention.AndroidFeatureConventionPlugin"
+        register("androidFeatureApi") {
+            id = libs.plugins.multi.module.android.feature.api.get().pluginId
+            implementationClass = "com.kkh.multimodule.convention.AndroidFeatureApiConventionPlugin"
+        }
+
+        register("androidFeatureImpl") {
+            id = libs.plugins.multi.module.android.feature.impl.get().pluginId
+            implementationClass = "com.kkh.multimodule.convention.AndroidFeatureImplConventionPlugin"
         }
 
         register("androidTest") {
