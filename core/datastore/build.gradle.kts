@@ -11,9 +11,4 @@ dependencies {
     implementation(project(":core:common"))
 
     implementation(libs.datastore)
-
-    // Test dependencies
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 }

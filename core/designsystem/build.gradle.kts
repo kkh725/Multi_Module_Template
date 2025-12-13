@@ -10,10 +10,6 @@ android {
 dependencies {
     implementation(project(":core:common"))
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-
     api(libs.androidx.material3)
     api(libs.androidx.material3.adaptive)
     api(libs.androidx.material3.navigationSuite)
