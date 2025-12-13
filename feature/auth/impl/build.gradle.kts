@@ -7,4 +7,6 @@ android {
     namespace = "com.kkh.impl"
 }
 
-dependencies {}
+dependencies {
+    implementation(project(":feature:auth:api"))
+}

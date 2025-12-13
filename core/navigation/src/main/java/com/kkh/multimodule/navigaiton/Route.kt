@@ -1,9 +1,10 @@
 package com.kkh.multimodule.navigaiton
 
+import androidx.navigation3.runtime.NavKey
 import com.kkh.multimodule.domain.model.history.HistoryModel
 import kotlinx.serialization.Serializable
 
-sealed interface Route
+sealed interface Route : NavKey
 
 @Serializable
 data object AuthGraphBaseRoute : Route
@@ -29,3 +30,6 @@ data class TestRoute(val testId : Int) : Route {
 
 @Serializable
 data object PauseRoute : Route
+
+@Serializable
+data object AuthRoute : Route
