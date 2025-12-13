@@ -6,18 +6,16 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SheetState
-import androidx.compose.material3.SheetValue
-import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.kkh.multimodule.effect.CommonEffect
 import com.kkh.multimodule.effect.EffectHelper
 import com.kkh.multimodule.moduletest.navigation.TestApp
 import com.kkh.multimodule.moduletest.ui.theme.TestModuleTheme
+import com.kkh.multimodule.navigaiton.NavigationEvent
+import com.kkh.multimodule.navigaiton.NavigationHelper
 import com.kkh.multimodule.ui.TestBottomSheetScaffoldState
 import com.kkh.multimodule.ui.rememberTestBottomSheetScaffoldState
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,7 +28,12 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var effectHelper: EffectHelper
 
+    @Inject
+    lateinit var navigationHelper: NavigationHelper
+
     private val viewModel: MainViewModel by viewModels()
+
+    private var lastUpPressTime: Long = 0L
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +50,7 @@ class MainActivity : ComponentActivity() {
 
             LaunchedEffect(viewModel) {
                 processSideEffect(sheetState)
+                processNavigationEvent(navHostController)
             }
 
             TestModuleTheme {
@@ -74,6 +78,59 @@ class MainActivity : ComponentActivity() {
                 }
 
                 CommonEffect.HideBottomSheet -> bottomSheetState.sheetState.bottomSheetState.hide()
+            }
+        }
+    }
+
+    private suspend fun processNavigationEvent(navController: NavHostController) {
+        navigationHelper.navigationFlow.collect { event ->
+
+            when (event) {
+                is NavigationEvent.To -> {
+                    navController.navigate(event.route) {
+                        if (event.popUpTo) {
+                            popUpTo(navController.graph.startDestinationId) {
+                                inclusive = false
+                            }
+                        }
+                    }
+                }
+
+                NavigationEvent.Up -> {
+                    val hasBackStack = navController.previousBackStackEntry != null
+
+                    if (hasBackStack) {
+                        navController.popBackStack()
+                    } else {
+                        val currentTime = System.currentTimeMillis()
+
+                        if (currentTime - lastUpPressTime < 3000) {
+                            this@MainActivity.finishAffinity()
+                        } else {
+                            lastUpPressTime = currentTime
+                            effectHelper.sendEffect(CommonEffect.ShowSnackBar("한 번 더 누르면 종료됩니다."))
+                        }
+                    }
+                }
+
+                is NavigationEvent.TopLevelTo -> {
+                    navController.navigate(event.route) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                }
+
+                is NavigationEvent.BottomBarTo -> {
+                    navController.navigate(event.route) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = false
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
             }
         }
     }
