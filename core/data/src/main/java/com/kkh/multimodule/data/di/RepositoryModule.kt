@@ -1,7 +1,7 @@
 package com.kkh.multimodule.data.di
 
 import com.kkh.multimodule.data.repository.HistoryRepositoryImpl
-import com.kkh.multimodule.domain.repository.HistoryRepository
+import com.kkh.multimodule.domain.repository.AuthRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -15,5 +15,5 @@ abstract class RepositoryModule {
     @Singleton
     abstract fun bindHistoryRepository(
         impl: HistoryRepositoryImpl
-    ): HistoryRepository
+    ): AuthRepository
 }

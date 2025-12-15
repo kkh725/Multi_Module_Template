@@ -19,17 +19,14 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideHistoryApi(retrofit: Retrofit): HistoryApi {
-        return retrofit.create(HistoryApi::class.java)
-    }
+    fun provideHistoryApi(retrofit: Retrofit): HistoryApi = retrofit.create(HistoryApi::class.java)
 
     @Provides
     @Singleton
     fun provideOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            })
+                level = HttpLoggingInterceptor.Level.BODY })
             .build()
     }
 

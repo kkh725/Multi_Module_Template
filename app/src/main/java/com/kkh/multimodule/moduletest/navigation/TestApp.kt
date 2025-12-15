@@ -6,12 +6,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.kkh.multimodule.designsystem.component.TestBottomSheet
+import com.kkh.multimodule.navigaiton.Route
 import com.kkh.multimodule.ui.TestBottomSheetScaffoldState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TestApp(
+internal fun TestApp(
     navHostController: NavHostController,
+    startDestination: Route,
     bottomSheetState: TestBottomSheetScaffoldState,
 ) {
     TestBottomSheet(
@@ -19,6 +21,7 @@ fun TestApp(
     ){ paddingValues ->
         TestAppNavHost(
             navController = navHostController,
+            startDestination = startDestination,
             modifier = Modifier.padding(paddingValues)
         )
     }

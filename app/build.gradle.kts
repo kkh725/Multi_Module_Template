@@ -14,4 +14,6 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:navigation"))
+
+    implementation("androidx.core:core-splashscreen:1.0.1")
 }

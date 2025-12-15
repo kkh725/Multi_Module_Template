@@ -18,13 +18,8 @@ class LocalTokenDataSourceImpl @Inject constructor(
     override val accessToken: Flow<String> = dataStore.getValue(ACCESS_TOKEN, "")
     override val refreshToken: Flow<String> = dataStore.getValue(REFRESH_TOKEN, "")
 
-    override suspend fun setAccessToken(accessToken: String) {
-        dataStore.setValue(ACCESS_TOKEN, accessToken)
-    }
-
-    override suspend fun setRefreshToken(refreshToken: String) {
-        dataStore.setValue(REFRESH_TOKEN, refreshToken)
-    }
+    override suspend fun setAccessToken(accessToken: String) { dataStore.setValue(ACCESS_TOKEN, accessToken) }
+    override suspend fun setRefreshToken(refreshToken: String) { dataStore.setValue(REFRESH_TOKEN, refreshToken) }
 
     override suspend fun clearToken() {
         coroutineScope {
