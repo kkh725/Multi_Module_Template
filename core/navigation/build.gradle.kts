@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.kkh.multimodule.navigaiton"
+    namespace = "com.kkh.multimodule.navigation"
 }
 
 dependencies {

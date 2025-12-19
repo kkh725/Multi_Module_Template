@@ -6,9 +6,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.kkh.multimodule.datastore.util.clear
 import com.kkh.multimodule.datastore.util.getValue
 import com.kkh.multimodule.datastore.util.setValue
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -22,10 +20,8 @@ class LocalTokenDataSourceImpl @Inject constructor(
     override suspend fun setRefreshToken(refreshToken: String) { dataStore.setValue(REFRESH_TOKEN, refreshToken) }
 
     override suspend fun clearToken() {
-        coroutineScope {
-            launch { dataStore.clear(REFRESH_TOKEN) }
-            dataStore.clear(ACCESS_TOKEN)
-        }
+        dataStore.clear(REFRESH_TOKEN)
+        dataStore.clear(ACCESS_TOKEN)
     }
 
     companion object {

@@ -1,4 +1,4 @@
-package com.kkh.multimodule.navigaiton
+package com.kkh.multimodule.navigation
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

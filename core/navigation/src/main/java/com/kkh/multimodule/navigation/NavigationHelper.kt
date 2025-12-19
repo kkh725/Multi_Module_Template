@@ -1,4 +1,4 @@
-package com.kkh.multimodule.navigaiton
+package com.kkh.multimodule.navigation
 
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.BUFFERED

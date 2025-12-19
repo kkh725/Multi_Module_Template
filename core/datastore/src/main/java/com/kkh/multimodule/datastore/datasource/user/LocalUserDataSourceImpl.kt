@@ -16,7 +16,5 @@ class LocalUserDataSourceImpl @Inject constructor(
 
     override suspend fun setAutoLogin(autoLogin: Boolean) { dataStore.setValue(AUTO_LOGIN, autoLogin) }
 
-    companion object {
-        private val AUTO_LOGIN = booleanPreferencesKey("AUTO_LOGIN")
-    }
+    companion object { private val AUTO_LOGIN = booleanPreferencesKey("AUTO_LOGIN") }
 }

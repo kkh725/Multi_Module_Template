@@ -1,4 +1,4 @@
-package com.kkh.multimodule.navigaiton
+package com.kkh.multimodule.navigation
 
 import android.os.Bundle
 import androidx.navigation.NavType

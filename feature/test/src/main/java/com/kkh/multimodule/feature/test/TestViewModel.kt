@@ -8,8 +8,8 @@ import com.kkh.multimodule.effect.CommonEffect
 import com.kkh.multimodule.effect.EffectHelper
 import com.kkh.multimodule.feature.test.contract.TestContract.TestEvent
 import com.kkh.multimodule.feature.test.contract.TestContract.TestState
-import com.kkh.multimodule.navigaiton.NavigationHelper
-import com.kkh.multimodule.navigaiton.TestRoute
+import com.kkh.multimodule.navigation.NavigationHelper
+import com.kkh.multimodule.navigation.TestRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 

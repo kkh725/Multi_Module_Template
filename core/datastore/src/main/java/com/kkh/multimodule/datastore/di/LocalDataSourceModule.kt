@@ -15,7 +15,5 @@ abstract class LocalDataSourceModule {
 
     @Binds
     @Singleton
-    abstract fun bindLocalTokenDataSource(
-        impl: LocalTokenDataSourceImpl
-    ): LocalTokenDataSource
+    abstract fun bindLocalTokenDataSource(impl: LocalTokenDataSourceImpl): LocalTokenDataSource
 }

@@ -1,4 +1,4 @@
-package com.kkh.multimodule.navigaiton
+package com.kkh.multimodule.navigation
 
 import androidx.navigation3.runtime.NavKey
 import com.kkh.multimodule.domain.model.history.HistoryModel

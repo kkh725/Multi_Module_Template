@@ -26,12 +26,11 @@ internal suspend fun <T> DataStore<Preferences>.clear(
     key: Preferences.Key<T>
 ) = edit { preferences -> preferences.remove(key) }
 
-private fun Flow<Preferences>.handleException(): Flow<Preferences> =
-    this.catch { exception ->
-        if (exception is IOException) {
-            emit(emptyPreferences())
-        } else {
-            Log.e("DataStoreException", "Error accessing DataStore", exception)
-            throw exception
-        }
+private fun Flow<Preferences>.handleException(): Flow<Preferences> = this.catch { exception ->
+    if (exception is IOException) {
+        emit(emptyPreferences())
+    } else {
+        Log.e("DataStoreException", "Error accessing DataStore", exception)
+        throw exception
     }
+}

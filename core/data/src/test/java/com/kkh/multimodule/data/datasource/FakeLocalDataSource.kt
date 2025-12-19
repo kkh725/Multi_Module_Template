@@ -1,18 +1,22 @@
 package com.kkh.multimodule.data.datasource
 
-import com.kkh.multimodule.datastore.datasource.LocalDataSource
+import com.kkh.multimodule.datastore.datasource.token.LocalTokenDataSource
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.MutableStateFlow
 
-class FakeLocalDataSource : LocalDataSource{
-    private var customText : String = ""
+class FakeLocalTokenDataSource : LocalTokenDataSource {
 
-    override suspend fun saveCustomText(saveString: String) {
-        customText = saveString
-    }
+    private val _accessToken = MutableStateFlow("")
+    override val accessToken: Flow<String> = _accessToken
 
-    override suspend fun getCustomText(): String = customText
-    override fun observeCustomText(): Flow<String> = flow{
-        emit(customText)
+    private val _refreshToken = MutableStateFlow("")
+    override val refreshToken: Flow<String> = _refreshToken
+
+    override suspend fun setAccessToken(accessToken: String) { _accessToken.value = accessToken }
+    override suspend fun setRefreshToken(refreshToken: String) { _refreshToken.value = refreshToken }
+
+    override suspend fun clearToken() {
+        _accessToken.value = ""
+        _refreshToken.value = ""
     }
 }

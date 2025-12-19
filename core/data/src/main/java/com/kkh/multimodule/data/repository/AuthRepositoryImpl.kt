@@ -5,30 +5,23 @@ import com.kkh.multimodule.datastore.datasource.user.LocalUserDataSource
 import com.kkh.multimodule.domain.repository.AuthRepository
 import com.kkh.multimodule.suspendRunCatching
 import jakarta.inject.Inject
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 
 class AuthRepositoryImpl @Inject constructor(
     private val localUserDataSource: LocalUserDataSource,
     private val localTokenDataSource: LocalTokenDataSource
-): AuthRepository {
+) : AuthRepository {
     override val autoLogin: Flow<Boolean> = localUserDataSource.autoLogin
 
-    override suspend fun login(): Result<Unit> = suspendRunCatching{
-        //success
-        coroutineScope {
-            launch { localTokenDataSource.setAccessToken("accessToken") }
-            launch { localTokenDataSource.setRefreshToken("refreshToken") }
-        }
-
+    override suspend fun login(): Result<Unit> = suspendRunCatching {
+        // dataStore single-writer. no parallel
+        localTokenDataSource.setAccessToken("accessToken")
+        localTokenDataSource.setRefreshToken("refreshToken")
         localUserDataSource.setAutoLogin(true)
     }
 
-    override suspend fun logout(): Result<Unit> = suspendRunCatching{
-        coroutineScope {
-            launch { localTokenDataSource.clearToken() }
-            launch { localUserDataSource.setAutoLogin(false) }
-        }
+    override suspend fun logout(): Result<Unit> = suspendRunCatching {
+        localTokenDataSource.clearToken()
+        localUserDataSource.setAutoLogin(false)
     }
 }

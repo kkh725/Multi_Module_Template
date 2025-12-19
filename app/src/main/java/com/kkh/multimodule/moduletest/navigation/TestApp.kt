@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.kkh.multimodule.designsystem.component.TestBottomSheet
-import com.kkh.multimodule.navigaiton.Route
+import com.kkh.multimodule.navigation.Route
 import com.kkh.multimodule.ui.TestBottomSheetScaffoldState
 
 @OptIn(ExperimentalMaterial3Api::class)

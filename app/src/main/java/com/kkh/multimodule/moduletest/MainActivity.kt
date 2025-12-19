@@ -1,6 +1,7 @@
 package com.kkh.multimodule.moduletest
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -8,30 +9,23 @@ import androidx.activity.viewModels
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation3.runtime.entryProvider
-import androidx.navigation3.runtime.rememberNavBackStack
-import androidx.navigation3.ui.NavDisplay
-import com.kkh.authEntry
-import com.kkh.multimodule.domain.repository.AuthRepository
 import com.kkh.multimodule.effect.CommonEffect
 import com.kkh.multimodule.effect.EffectHelper
 import com.kkh.multimodule.moduletest.navigation.TestApp
 import com.kkh.multimodule.moduletest.ui.theme.TestModuleTheme
-import com.kkh.multimodule.navigaiton.AuthGraph
-import com.kkh.multimodule.navigaiton.AuthGraphBaseRoute
-import com.kkh.multimodule.navigaiton.NavigationEvent
-import com.kkh.multimodule.navigaiton.NavigationHelper
-import com.kkh.multimodule.navigaiton.PauseRoute
+import com.kkh.multimodule.navigation.AuthRoute
+import com.kkh.multimodule.navigation.NavigationEvent
+import com.kkh.multimodule.navigation.NavigationHelper
+import com.kkh.multimodule.navigation.PauseRoute
 import com.kkh.multimodule.ui.TestBottomSheetScaffoldState
 import com.kkh.multimodule.ui.rememberTestBottomSheetScaffoldState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -40,25 +34,34 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var effectHelper: EffectHelper
-
     @Inject
     lateinit var navigationHelper: NavigationHelper
 
     private val viewModel: MainViewModel by viewModels()
 
-    private var lastUpPressTime: Long = 0L
+    private var lastUpPressTime = 0L
+    private var isInitialized = false
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
-        splashScreen.setKeepOnScreenCondition { viewModel.autoLogin.value == null }
+        splashScreen.setKeepOnScreenCondition { !isInitialized }
 
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge()
 
         lifecycleScope.launch {
-            viewModel.initConfig()
+            viewModel.autoLogin.collect {
+                viewModel.initConfig()
+
+                if (it != null) {
+                    delay(300)
+                    if (intent.extras != null) Log.d("intent", "onCreate: ${intent.extras}")
+
+                    isInitialized = true
+                }
+            }
         }
 
         setContent {
@@ -66,24 +69,17 @@ class MainActivity : ComponentActivity() {
 
             val navHostController = rememberNavController()
             val sheetState = rememberTestBottomSheetScaffoldState()
+            val startRoute = if (autoLoginState == true) PauseRoute else AuthRoute
 
             LaunchedEffect(viewModel) {
                 processSideEffect(sheetState)
                 processNavigationEvent(navHostController)
             }
 
-            LaunchedEffect(autoLoginState) {
-                when (autoLoginState) {
-                    true -> navigationHelper.navigate(NavigationEvent.TopLevelTo(PauseRoute))
-                    false -> navigationHelper.navigate(NavigationEvent.TopLevelTo(AuthGraphBaseRoute))
-                    null -> Unit
-                }
-            }
-
             TestModuleTheme {
                 TestApp(
                     navHostController = navHostController,
-                    startDestination = PauseRoute,
+                    startDestination = startRoute,
                     bottomSheetState = sheetState
                 )
             }
