@@ -22,6 +22,7 @@ import com.kkh.multimodule.navigation.AuthRoute
 import com.kkh.multimodule.navigation.NavigationEvent
 import com.kkh.multimodule.navigation.NavigationHelper
 import com.kkh.multimodule.navigation.PauseRoute
+import com.kkh.multimodule.ui.SnackBarState
 import com.kkh.multimodule.ui.TestBottomSheetScaffoldState
 import com.kkh.multimodule.ui.rememberTestBottomSheetScaffoldState
 import dagger.hilt.android.AndroidEntryPoint
@@ -89,12 +90,17 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     private suspend fun processSideEffect(bottomSheetState: TestBottomSheetScaffoldState) {
         effectHelper.effectFlow.collect { event ->
+            val snackBarHostState = bottomSheetState.sheetState.snackbarHostState
+
             when (event) {
-                is CommonEffect.ShowSnackBar ->
-                    bottomSheetState.sheetState.snackbarHostState.showSnackbar(event.text)
+                is CommonEffect.ShowSnackBar ->{
+                    snackBarHostState.currentSnackbarData?.dismiss()
+                    val raw = SnackBarState.toRaw(event.snackBarState)
+                    snackBarHostState.showSnackbar(raw)
+                }
 
                 CommonEffect.HideSnackBar ->
-                    bottomSheetState.sheetState.snackbarHostState.currentSnackbarData?.dismiss()
+                    snackBarHostState.currentSnackbarData?.dismiss()
 
                 is CommonEffect.ShowBottomSheet -> {
                     bottomSheetState.updateContent(event.content)
@@ -132,7 +138,7 @@ class MainActivity : ComponentActivity() {
                             this@MainActivity.finishAffinity()
                         } else {
                             lastUpPressTime = currentTime
-                            effectHelper.sendEffect(CommonEffect.ShowSnackBar("한 번 더 누르면 종료됩니다."))
+                            effectHelper.sendEffect(CommonEffect.ShowSnackBar(SnackBarState.Info("한 번 더 누르면 종료됩니다.")))
                         }
                     }
                 }

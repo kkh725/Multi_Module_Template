@@ -22,6 +22,9 @@ abstract class BaseViewModel<S : UiState, E : UiEvent>(
     private val _intents: Channel<E> = Channel(BUFFERED)
     private val _reducer = Channel<S.() -> S>(BUFFERED)
 
+    private val _sideEffect = Channel<UiEffect>(BUFFERED)
+    val sideEffect = _sideEffect.receiveAsFlow()
+
     init {
         _intents.receiveAsFlow()
             .onEach(::processEvent)
@@ -36,7 +39,6 @@ abstract class BaseViewModel<S : UiState, E : UiEvent>(
 
     protected abstract suspend fun processEvent(event: E)
 
-    protected fun setState(reduce: S.() -> S) = viewModelScope.launch {
-        _reducer.send(reduce)
-    }
+    protected fun setState(reduce: S.() -> S) = viewModelScope.launch { _reducer.send(reduce) }
+    protected fun postEffect(effect: UiEffect) = viewModelScope.launch { _sideEffect.send(effect) }
 }

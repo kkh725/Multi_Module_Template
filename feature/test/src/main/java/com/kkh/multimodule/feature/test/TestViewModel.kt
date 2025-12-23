@@ -4,12 +4,14 @@ import androidx.lifecycle.SavedStateHandle
 import com.kkh.multimodule.base.BaseViewModel
 import com.kkh.multimodule.domain.model.error.ErrorHelper
 import com.kkh.multimodule.domain.repository.AuthRepository
-import com.kkh.multimodule.effect.CommonEffect
+import com.kkh.multimodule.effect.CommonEffect.ShowBottomSheet
+import com.kkh.multimodule.effect.CommonEffect.ShowSnackBar
 import com.kkh.multimodule.effect.EffectHelper
 import com.kkh.multimodule.feature.test.contract.TestContract.TestEvent
 import com.kkh.multimodule.feature.test.contract.TestContract.TestState
 import com.kkh.multimodule.navigation.NavigationHelper
 import com.kkh.multimodule.navigation.TestRoute
+import com.kkh.multimodule.ui.SnackBarState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 
@@ -25,8 +27,14 @@ class TestViewModel @Inject constructor(
 
     override suspend fun processEvent(event: TestEvent) {
         when (event) {
-            is TestEvent.OnButtonClick -> effectHelper.sendEffect(CommonEffect.ShowSnackBar("errrr"))//effectHelper.sendEffect(CommonEffect.HideBottomSheet)
-            is TestEvent.OnNewMatchingCardClick -> effectHelper.sendEffect(CommonEffect.ShowBottomSheet(event.content))
+            is TestEvent.OnButtonClick -> effectHelper.sendEffect(
+                ShowSnackBar(
+                    SnackBarState.Info("error")
+                )
+            )//effectHelper.sendEffect(CommonEffect.HideBottomSheet)
+            is TestEvent.OnNewMatchingCardClick -> effectHelper.sendEffect(
+                ShowBottomSheet(event.content)
+            )
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.kkh.multimodule.effect
 
 import androidx.compose.runtime.Composable
+import com.kkh.multimodule.ui.SnackBarState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -18,7 +19,7 @@ class EffectHelper @Inject constructor() {
 }
 
 sealed class CommonEffect {
-    data class ShowSnackBar(val text: String) : CommonEffect()
+    data class ShowSnackBar(val snackBarState: SnackBarState) : CommonEffect()
     data object HideSnackBar : CommonEffect()
     data class ShowBottomSheet(val content: @Composable () -> Unit) : CommonEffect()
     data object HideBottomSheet : CommonEffect()
