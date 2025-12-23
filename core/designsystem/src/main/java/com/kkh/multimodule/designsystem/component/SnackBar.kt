@@ -78,28 +78,6 @@ fun TestSnackBar(snackBarData: SnackbarData) {
     }
 }
 
-@Composable
-fun PieceSnackBarHost(
-    hostState: SnackbarHostState,
-    modifier: Modifier = Modifier,
-    snackbar: @Composable (SnackbarData) -> Unit = { Snackbar(it) }
-) {
-    val currentSnackbarData = hostState.currentSnackbarData
-    LaunchedEffect(currentSnackbarData) {
-        if (currentSnackbarData != null) {
-            delay(2000L)
-            currentSnackbarData.dismiss()
-        }
-    }
-
-    Crossfade(
-        targetState = hostState.currentSnackbarData,
-        modifier = modifier,
-        label = "",
-        content = { current -> if (current != null) snackbar(current) },
-    )
-}
-
 @Preview
 @Composable
 private fun PieceSnackBarPreview() = MaterialTheme {

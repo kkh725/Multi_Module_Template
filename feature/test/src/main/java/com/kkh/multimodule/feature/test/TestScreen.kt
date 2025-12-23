@@ -9,14 +9,22 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.kkh.multimodule.effect.CommonEffect.ShowSnackBar
+import com.kkh.multimodule.effect.SnackBarSideEffect
+import com.kkh.multimodule.effect.getMessage
+import com.kkh.multimodule.effect.handle
 import com.kkh.multimodule.feature.test.contract.TestContract
 import com.kkh.multimodule.feature.test.contract.TestContract.TestState
+import com.kkh.multimodule.ui.SnackBarState.Info
 import com.skydoves.compose.stability.runtime.TraceRecomposition
 import kotlinx.collections.immutable.ImmutableList
 
@@ -24,18 +32,31 @@ import kotlinx.collections.immutable.ImmutableList
 @TraceRecomposition
 @Composable
 fun TestRoute(
-    testViewModel: TestViewModel = hiltViewModel(),
+    viewModel: TestViewModel = hiltViewModel(),
     onClick: () -> Unit
 ) {
-    val uiState by testViewModel.state.collectAsStateWithLifecycle()
+    val uiState by viewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
-    testViewModel.sendEvent(TestContract.TestEvent.OnNewMatchingCardClick(@Composable {
-        Column (
+    LaunchedEffect(viewModel) {
+        viewModel.sideEffect.collect { effect ->
+            when {
+                effect is SnackBarSideEffect -> effect.handle { _, _ ->
+                    val message = effect.getMessage(context)
+
+                    viewModel.effectHelper.sendEffect(ShowSnackBar(Info(message)))
+                }
+            }
+        }
+    }
+
+    viewModel.sendEvent(TestContract.TestEvent.OnNewMatchingCardClick(@Composable {
+        Column(
             Modifier
                 .fillMaxWidth()
                 .background(Color.Blue)
         ) {
-            Button(onClick = {testViewModel.sendEvent(TestContract.TestEvent.OnButtonClick)}) {
+            Button(onClick = { viewModel.sendEvent(TestContract.TestEvent.OnButtonClick) }) {
                 Text("bt")
             }
             Spacer(Modifier.height(100.dp))

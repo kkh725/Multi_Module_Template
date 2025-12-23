@@ -2,11 +2,13 @@ package com.kkh.multimodule.feature.test
 
 import androidx.lifecycle.SavedStateHandle
 import com.kkh.multimodule.base.BaseViewModel
+import com.kkh.multimodule.designsystem.R
 import com.kkh.multimodule.domain.model.error.ErrorHelper
 import com.kkh.multimodule.domain.repository.AuthRepository
 import com.kkh.multimodule.effect.CommonEffect.ShowBottomSheet
 import com.kkh.multimodule.effect.CommonEffect.ShowSnackBar
 import com.kkh.multimodule.effect.EffectHelper
+import com.kkh.multimodule.effect.SnackBarSideEffect
 import com.kkh.multimodule.feature.test.contract.TestContract.TestEvent
 import com.kkh.multimodule.feature.test.contract.TestContract.TestState
 import com.kkh.multimodule.navigation.NavigationHelper
@@ -19,7 +21,7 @@ import jakarta.inject.Inject
 class TestViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val navigationHelper: NavigationHelper,
-    private val effectHelper: EffectHelper,
+    internal val effectHelper: EffectHelper,
     private val errorHelper: ErrorHelper,
     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel<TestState, TestEvent>(initialState = TestState()) {
@@ -27,11 +29,8 @@ class TestViewModel @Inject constructor(
 
     override suspend fun processEvent(event: TestEvent) {
         when (event) {
-            is TestEvent.OnButtonClick -> effectHelper.sendEffect(
-                ShowSnackBar(
-                    SnackBarState.Info("error")
-                )
-            )//effectHelper.sendEffect(CommonEffect.HideBottomSheet)
+            is TestEvent.OnButtonClick ->
+                postEffect(SnackBarSideEffect.Info(R.string.core_designsystem_snackbar_match_accepted))
             is TestEvent.OnNewMatchingCardClick -> effectHelper.sendEffect(
                 ShowBottomSheet(event.content)
             )
