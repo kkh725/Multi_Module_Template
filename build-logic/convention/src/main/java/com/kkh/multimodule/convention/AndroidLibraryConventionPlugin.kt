@@ -53,9 +53,9 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
         dependencies {
             add("androidTestImplementation", libs.findLibrary("androidx-junit").get())
             add("androidTestImplementation", libs.findLibrary("androidx-espresso-core").get())
-            add("testImplementation", "org.junit.jupiter:junit-jupiter:5.10.2")
-            add("implementation", "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-            add("testImplementation", "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+            add("testImplementation", libs.findLibrary("junit-jupiter").get())
+            add("implementation", libs.findLibrary("coroutines-core").get())
+            add("testImplementation", libs.findLibrary("coroutines-test").get())
             add("testImplementation", "org.junit.platform:junit-platform-launcher")
         }
     }

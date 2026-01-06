@@ -19,7 +19,6 @@ dependencies {
     implementation(libs.android.gradle.plugin)
     implementation(libs.kotlin.gradle.plugin)
     implementation(libs.compose.compiler.gradle.plugin)
-    implementation(libs.jetbrains.kotlin.gradle.plugin)
     implementation(libs.kotlinx.serialization)
 
     compileOnly(libs.room.gradle.plugin)
