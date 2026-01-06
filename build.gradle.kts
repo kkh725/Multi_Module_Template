@@ -11,3 +11,5 @@ plugins {
     alias(libs.plugins.room) apply false
     alias(libs.plugins.stability.analyzer) apply false
 }
+
+apply(from = "gradle/dependencyGraph.gradle")
