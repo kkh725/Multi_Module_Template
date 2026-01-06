@@ -1,7 +1,6 @@
 package com.kkh.multimodule.navigation
 
 import androidx.navigation3.runtime.NavKey
-import com.kkh.multimodule.domain.model.history.HistoryModel
 import kotlinx.serialization.Serializable
 
 sealed interface Route : NavKey
@@ -12,8 +11,8 @@ data object AuthGraphBaseRoute : Route
 // route -> 그래프 형식으로 묶여야 하는 경우
 sealed interface AuthGraph : Route {
     @Serializable
-    data class LoginRoute(val history: HistoryModel) : AuthGraph{
-        companion object { const val KEY_HISTORY = "history" }
+    data class LoginRoute(val historyId: Int) : AuthGraph {
+        companion object { const val KEY_HISTORY_ID = "historyId" }
     }
 
     @Serializable
