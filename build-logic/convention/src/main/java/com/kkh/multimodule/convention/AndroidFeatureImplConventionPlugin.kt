@@ -21,12 +21,10 @@ class AndroidFeatureImplConventionPlugin : Plugin<Project> {
             }
 
             dependencies {
-                "api"(project(":core:navigation"))
-
+                "implementation"(project(":core:navigation"))
                 "implementation"(project(":core:designsystem"))
                 "implementation"(project(":core:domain"))
                 "implementation"(project(":core:common"))
-                "implementation"(project(":core:navigation"))
 
                 "implementation"(libs.findLibrary("hilt-navigation-compose").get())
                 "implementation"(libs.findLibrary("androidx-lifecycle-runtime-ktx").get())
