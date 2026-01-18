@@ -2,34 +2,26 @@ package com.kkh.multimodule.moduletest.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import com.kkh.multimodule.feature.test.navigation.testNavigation
-import com.kkh.multimodule.navigation.Route
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.ui.NavDisplay
+import com.kkh.authEntry
+import com.kkh.multimodule.feature.test.navigation.testEntry
 
 @Composable
 internal fun TestAppNavHost(
-    navController: NavHostController,
-    startDestination: Route,
+    navBackStack: NavBackStack<NavKey>,
+    onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-
-    NavHost(
-        navController = navController,
-        startDestination = startDestination,
+    NavDisplay(
+        backStack = navBackStack,
+        onBack = onBack,
         modifier = modifier,
-    ) {
-        testNavigation()
-    }
-
-//    val backStack = rememberNavBackStack()
-//
-//    backStack.add(com.kkh.multimodule.navigaiton.AuthRoute)
-//
-//    NavDisplay(
-//        backStack = backStack,
-//        entryProvider = entryProvider {
-//            authEntry()
-//        }
-//    )
+        entryProvider = entryProvider {
+            testEntry()
+            authEntry()
+        }
+    )
 }

@@ -14,7 +14,6 @@ class AndroidFeatureApiConventionPlugin : Plugin<Project> {
 
             dependencies {
                 "api"(project(":core:navigation"))
-                "implementation"(libs.findLibrary("androidx-navigation-compose-android").get())
                 "implementation"(libs.findLibrary("androidx-core-ktx").get())
                 "implementation"(libs.findLibrary("retrofit-kotlin-serialization").get())
                 "implementation"(libs.findLibrary("androidx-navigation3-runtime").get())

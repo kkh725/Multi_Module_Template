@@ -12,9 +12,11 @@ import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberNavBackStack
 import com.kkh.multimodule.effect.CommonEffect
+import com.kkh.multimodule.navigation.Route
 import com.kkh.multimodule.effect.EffectHelper
 import com.kkh.multimodule.moduletest.navigation.TestApp
 import com.kkh.multimodule.moduletest.ui.theme.TestModuleTheme
@@ -68,19 +70,25 @@ class MainActivity : ComponentActivity() {
         setContent {
             val autoLoginState by viewModel.autoLogin.collectAsStateWithLifecycle()
 
-            val navHostController = rememberNavController()
+            val startRoute: Route = if (autoLoginState == true) PauseRoute else AuthRoute
+            val navBackStack = rememberNavBackStack(startRoute)
             val sheetState = rememberTestBottomSheetScaffoldState()
-            val startRoute = if (autoLoginState == true) PauseRoute else AuthRoute
+
+            LaunchedEffect(autoLoginState) {
+                if (autoLoginState != null && navBackStack.isEmpty()) {
+                    navBackStack.add(startRoute)
+                }
+            }
 
             LaunchedEffect(viewModel) {
                 processSideEffect(sheetState)
-                processNavigationEvent(navHostController)
+                processNavigationEvent(navBackStack)
             }
 
             TestModuleTheme {
                 TestApp(
-                    navHostController = navHostController,
-                    startDestination = startRoute,
+                    navBackStack = navBackStack,
+                    onBack = { navigationHelper.navigate(NavigationEvent.Up) },
                     bottomSheetState = sheetState
                 )
             }
@@ -112,25 +120,26 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private suspend fun processNavigationEvent(navController: NavHostController) {
+    private suspend fun processNavigationEvent(navBackStack: NavBackStack<NavKey>) {
         navigationHelper.navigationFlow.collect { event ->
-
             when (event) {
                 is NavigationEvent.To -> {
-                    navController.navigate(event.route) {
-                        if (event.popUpTo) {
-                            popUpTo(navController.graph.startDestinationId) {
-                                inclusive = false
-                            }
+                    if (event.popUpTo) {
+                        // popUpTo를 사용하는 경우, 백스택의 첫 번째 항목까지 제거하고 새로운 route 추가
+                        val firstRoute = if (navBackStack.isNotEmpty()) navBackStack[0] else null
+                        navBackStack.clear()
+                        if (firstRoute != null) {
+                            navBackStack.add(firstRoute)
                         }
                     }
+                    navBackStack.add(event.route)
                 }
 
                 NavigationEvent.Up -> {
-                    val hasBackStack = navController.previousBackStackEntry != null
+                    val hasBackStack = navBackStack.size > 1
 
                     if (hasBackStack) {
-                        navController.popBackStack()
+                        navBackStack.removeAt(navBackStack.lastIndex)
                     } else {
                         val currentTime = System.currentTimeMillis()
 
@@ -144,22 +153,27 @@ class MainActivity : ComponentActivity() {
                 }
 
                 is NavigationEvent.TopLevelTo -> {
-                    navController.navigate(event.route) {
-                        popUpTo(navController.graph.id) {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    }
+                    // Top level navigation: 백스택을 완전히 교체
+                    navBackStack.clear()
+                    navBackStack.add(event.route)
                 }
 
                 is NavigationEvent.BottomBarTo -> {
-                    navController.navigate(event.route) {
-                        popUpTo(navController.graph.id) {
-                            inclusive = false
+                    // Bottom bar navigation: 백스택의 첫 번째 항목은 유지하고 나머지를 제거한 후 새로운 route 추가
+                    val firstRoute = if (navBackStack.isNotEmpty()) navBackStack[0] else null
+
+                    if (firstRoute != null && firstRoute != event.route) {
+                        // 첫 번째 항목을 유지하고 나머지 제거
+                        while (navBackStack.size > 1) {
+                            navBackStack.removeAt(navBackStack.lastIndex)
                         }
-                        launchSingleTop = true
-                        restoreState = true
+                        // 새로운 route 추가
+                        navBackStack.add(event.route)
+                    } else if (firstRoute == null) {
+                        // 백스택이 비어있으면 새로운 route 추가
+                        navBackStack.add(event.route)
                     }
+                    // 이미 같은 route면 아무것도 하지 않음
                 }
             }
         }
