@@ -14,7 +14,6 @@ import com.kkh.multimodule.ui.TestBottomSheetScaffoldState
 @Composable
 internal fun TestApp(
     navBackStack: NavBackStack<NavKey>,
-    onBack: () -> Unit,
     bottomSheetState: TestBottomSheetScaffoldState,
 ) {
     TestBottomSheet(
@@ -22,7 +21,6 @@ internal fun TestApp(
     ){ paddingValues ->
         TestAppNavHost(
             navBackStack = navBackStack,
-            onBack = onBack,
             modifier = Modifier.padding(paddingValues)
         )
     }

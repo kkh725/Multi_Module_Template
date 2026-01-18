@@ -12,12 +12,10 @@ import com.kkh.multimodule.feature.test.navigation.testEntry
 @Composable
 internal fun TestAppNavHost(
     navBackStack: NavBackStack<NavKey>,
-    onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     NavDisplay(
         backStack = navBackStack,
-        onBack = onBack,
         modifier = modifier,
         entryProvider = entryProvider {
             testEntry()

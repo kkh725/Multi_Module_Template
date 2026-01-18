@@ -70,7 +70,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val autoLoginState by viewModel.autoLogin.collectAsStateWithLifecycle()
 
-            val startRoute: Route = if (autoLoginState == true) PauseRoute else AuthRoute
+            val startRoute = if (autoLoginState == true) PauseRoute else AuthRoute
             val navBackStack = rememberNavBackStack(startRoute)
             val sheetState = rememberTestBottomSheetScaffoldState()
 
@@ -88,7 +88,6 @@ class MainActivity : ComponentActivity() {
             TestModuleTheme {
                 TestApp(
                     navBackStack = navBackStack,
-                    onBack = { navigationHelper.navigate(NavigationEvent.Up) },
                     bottomSheetState = sheetState
                 )
             }
