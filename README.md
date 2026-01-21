@@ -1,6 +1,4 @@
-## 멀티모듈 템플릿
-
-## 🚩 Tech Stack
+## Tech Stack
 
 ### Architecture
 
