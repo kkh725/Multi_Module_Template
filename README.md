@@ -27,7 +27,6 @@
 
 ### Test
 
-- JUnit4
 - JUnit5
 - Espresso
 
