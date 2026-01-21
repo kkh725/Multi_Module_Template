@@ -20,6 +20,7 @@ dependencies {
     implementation(libs.kotlin.gradle.plugin)
     implementation(libs.compose.compiler.gradle.plugin)
     implementation(libs.kotlinx.serialization)
+    implementation(libs.android.junit5.gradle.plugin)
 
     compileOnly(libs.room.gradle.plugin)
     compileOnly(libs.ksp.gradlePlugin)

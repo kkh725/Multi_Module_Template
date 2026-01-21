@@ -14,18 +14,22 @@ class AndroidTestConventionPlugin : Plugin<Project> {
         with(target) {
             apply(plugin = "com.android.test")
             apply(plugin = "org.jetbrains.kotlin.android")
+            apply(plugin = "de.mannodermaus.android-junit5")
 
             extensions.configure<TestExtension> {
                 configureKotlinAndroid(this)
                 defaultConfig.targetSdk = libs.findVersion("projectTargetSdkVersion").get().toString().toInt()
+                defaultConfig.testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+                defaultConfig.testInstrumentationRunnerArguments["runnerBuilder"] = "de.mannodermaus.junit5.AndroidJUnit5Builder"
             }
 
             dependencies{
-                "androidTestImplementation"(libs.findLibrary("androidx-junit").get())
                 "androidTestImplementation"(libs.findLibrary("androidx-espresso-core").get())
-                "androidTestImplementation"(libs.findLibrary("androidx-ui-test-junit4").get())
+                "androidTestImplementation"(libs.findLibrary("junit-jupiter-api").get())
+                "androidTestImplementation"(libs.findLibrary("android-junit5-core").get())
+                "androidTestRuntimeOnly"(libs.findLibrary("android-junit5-runner").get())
 
-                "testImplementation"(libs.findLibrary("junit").get())
+                "testImplementation"(libs.findLibrary("junit-jupiter").get())
             }
         }
     }

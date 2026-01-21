@@ -27,12 +27,15 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         apply(plugin = "com.android.library")
         apply(plugin = "org.jetbrains.kotlin.android")
+        apply(plugin = "de.mannodermaus.android-junit5")
 
         extensions.configure<LibraryExtension> {
             configureKotlinAndroid(this)
 
             defaultConfig.testInstrumentationRunner =
                 "androidx.test.runner.AndroidJUnitRunner"
+            defaultConfig.testInstrumentationRunnerArguments["runnerBuilder"] =
+                "de.mannodermaus.junit5.AndroidJUnit5Builder"
 
             testOptions.animationsDisabled = true
 
@@ -51,8 +54,10 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
         }
 
         dependencies {
-            add("androidTestImplementation", libs.findLibrary("androidx-junit").get())
             add("androidTestImplementation", libs.findLibrary("androidx-espresso-core").get())
+            add("androidTestImplementation", libs.findLibrary("junit-jupiter-api").get())
+            add("androidTestImplementation", libs.findLibrary("android-junit5-core").get())
+            add("androidTestRuntimeOnly", libs.findLibrary("android-junit5-runner").get())
             add("testImplementation", libs.findLibrary("junit-jupiter").get())
             add("implementation", libs.findLibrary("coroutines-core").get())
             add("testImplementation", libs.findLibrary("coroutines-test").get())
