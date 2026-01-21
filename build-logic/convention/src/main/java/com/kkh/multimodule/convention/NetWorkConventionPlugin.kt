@@ -15,6 +15,8 @@ class NetWorkConventionPlugin: Plugin<Project> {
                 "implementation"(libs.findLibrary("okhttp").get())
                 "implementation"(libs.findLibrary("okhttp-logging").get())
                 "implementation"(platform(libs.findLibrary("okhttp-bom").get()))
+
+                "implementation"(libs.findLibrary("kotlinx-serialization-json").get())
             }
         }
     }
