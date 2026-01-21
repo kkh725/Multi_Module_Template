@@ -29,7 +29,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "moduletest"
+rootProject.name = "kkh-multi-module-template"
 include(":app")
 
 include(":feature:test")
