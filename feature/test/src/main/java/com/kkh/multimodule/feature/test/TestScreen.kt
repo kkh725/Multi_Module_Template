@@ -1,7 +1,6 @@
 package com.kkh.multimodule.feature.test
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,17 +21,14 @@ import com.kkh.multimodule.effect.SnackBarSideEffect
 import com.kkh.multimodule.effect.getMessage
 import com.kkh.multimodule.effect.handle
 import com.kkh.multimodule.feature.test.contract.TestContract
-import com.kkh.multimodule.feature.test.contract.TestContract.TestState
 import com.kkh.multimodule.ui.SnackBarState.Info
 import com.skydoves.compose.stability.runtime.TraceRecomposition
-import kotlinx.collections.immutable.ImmutableList
 
 @Suppress("NonSkippableComposable")
 @TraceRecomposition
 @Composable
 fun TestRoute(
-    viewModel: TestViewModel = hiltViewModel(),
-    onClick: () -> Unit
+    viewModel: TestViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -61,18 +57,5 @@ fun TestRoute(
             Spacer(Modifier.height(100.dp))
 
         }
-
     }))
 }
-
-@Composable
-fun Test(
-    a: StableClass
-) {
-    Text("ddd")
-}
-
-data class StableClass(
-    val list: ImmutableList<String>,
-    var str: String
-)

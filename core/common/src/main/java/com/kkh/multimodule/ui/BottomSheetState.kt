@@ -24,13 +24,8 @@ class TestBottomSheetScaffoldState(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun rememberTestBottomSheetScaffoldState(): TestBottomSheetScaffoldState {
-    val sheetState = rememberStandardBottomSheetState(
-        skipHiddenState = false
-    )
-
-    val scaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = sheetState
-    )
+    val sheetState = rememberStandardBottomSheetState(skipHiddenState = false)
+    val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = sheetState)
 
     return remember(scaffoldState) {
         TestBottomSheetScaffoldState(

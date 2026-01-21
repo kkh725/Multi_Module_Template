@@ -16,7 +16,6 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
 import com.kkh.multimodule.effect.CommonEffect
-import com.kkh.multimodule.navigation.Route
 import com.kkh.multimodule.effect.EffectHelper
 import com.kkh.multimodule.moduletest.navigation.TestApp
 import com.kkh.multimodule.moduletest.ui.theme.TestModuleTheme
