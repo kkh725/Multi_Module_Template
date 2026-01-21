@@ -179,8 +179,7 @@ multi-module-android-application = { id = "multi.module.android.application"}
 multi-module-android-compose = { id = "multi.module.android.application-compose"}
 multi-module-android-library-compose = { id = "multi.module.android.library-compose"}
 multi-module-library = {id = "multi.module-library"}
-multi-module-android-feature-api = { id = "multi.module.android.feature.api" }
-multi-module-android-feature-impl = { id = "multi.module.android.feature.impl" }
+multi-module-android-feature = { id = "multi.module.android.feature" }
 multi-module-android-test = { id = "multi.module.android.test" }
 multi-module-hilt = { id = "multi.module.hilt" }
 multi-module-network = {id = "multi.module-network"}

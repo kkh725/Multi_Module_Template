@@ -6,7 +6,7 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
-import com.kkh.feature.auth.impl.authEntry
+import com.kkh.feature.auth.navigation.authEntry
 import com.kkh.feature.test.navigation.testEntry
 
 @Composable

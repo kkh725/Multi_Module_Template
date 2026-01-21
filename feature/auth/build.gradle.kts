@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.kkh.feature.test"
+    namespace = "com.kkh.feature.auth"
 }
 
 dependencies {}

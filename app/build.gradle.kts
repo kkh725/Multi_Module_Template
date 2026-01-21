@@ -6,8 +6,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":feature:auth:api"))
-    implementation(project(":feature:auth:impl"))
+    implementation(project(":feature:auth"))
     implementation(project(":feature:test"))
     implementation(project(":core:data"))
     implementation(project(":core:domain"))
