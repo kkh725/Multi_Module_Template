@@ -27,7 +27,6 @@ ksp = "2.2.20-2.0.4"
 
 #retrofit
 retrofit = "3.0.0"
-retrofit-gson = "2.13.1"
 
 #okhttp
 okhttp = "5.3.0"
@@ -114,7 +113,6 @@ ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devto
 #retrofit
 retrofit = {group = "com.squareup.retrofit2", name = "retrofit",version.ref = "retrofit"}
 retrofit-kotlin-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
-retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 
 #okhttp3
 okhttp-bom = {group = "com.squareup.okhttp3", name = "okhttp-bom",version.ref = "okhttp"}

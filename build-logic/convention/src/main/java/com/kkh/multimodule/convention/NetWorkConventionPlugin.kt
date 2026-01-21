@@ -11,7 +11,6 @@ class NetWorkConventionPlugin: Plugin<Project> {
             dependencies {
                 "implementation"(libs.findLibrary("retrofit").get())
                 "implementation"(libs.findLibrary("retrofit-kotlin-serialization").get())
-                "implementation"(libs.findLibrary("retrofit-gson").get())
 
                 "implementation"(libs.findLibrary("okhttp").get())
                 "implementation"(libs.findLibrary("okhttp-logging").get())
