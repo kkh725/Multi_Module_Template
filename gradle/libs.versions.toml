@@ -50,7 +50,7 @@ immutable = "0.4.0"
 serialization = "1.7.3"
 
 # Project versions
-projectApplicationId = "com.kkh.multimodule.moduletest"
+projectApplicationId = "com.kkh.app"
 projectVersionName = "1.0.0"
 projectVersionCode = "1"
 projectMinSdkVersion = "30"

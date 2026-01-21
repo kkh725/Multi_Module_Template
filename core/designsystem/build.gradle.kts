@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.kkh.multimodule.designsystem"
+    namespace = "com.kkh.designsystem"
 }
 
 dependencies {

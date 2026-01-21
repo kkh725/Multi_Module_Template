@@ -1,4 +1,4 @@
-package com.kkh.multimodule
+package com.kkh.common
 
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.jupiter.api.Test
@@ -8,6 +8,6 @@ class ExampleInstrumentedTest {
     @Test
     fun useAppContext() {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.kkh.multimodule.test", appContext.packageName)
+        assertEquals("com.kkh.common.test", appContext.packageName)
     }
 }

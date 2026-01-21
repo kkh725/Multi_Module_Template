@@ -1,4 +1,4 @@
-package com.kkh.multimodule.navigation
+package com.kkh.navigation
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertEquals

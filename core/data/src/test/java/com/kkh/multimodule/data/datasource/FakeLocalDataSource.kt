@@ -1,6 +1,6 @@
-package com.kkh.multimodule.data.datasource
+package com.kkh.data.datasource
 
-import com.kkh.multimodule.datastore.datasource.token.LocalTokenDataSource
+import com.kkh.datastore.datasource.token.LocalTokenDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 

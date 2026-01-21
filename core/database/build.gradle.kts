@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.kkh.multimodule.database"
+    namespace = "com.kkh.database"
 }
 
 dependencies {

@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.kkh.multimodule.datastore"
+    namespace = "com.kkh.datastore"
 }
 
 dependencies {

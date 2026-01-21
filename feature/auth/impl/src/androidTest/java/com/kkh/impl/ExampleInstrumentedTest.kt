@@ -1,4 +1,4 @@
-package com.kkh.impl
+package com.kkh.feature.auth.impl
 
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.jupiter.api.Test

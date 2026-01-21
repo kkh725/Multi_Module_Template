@@ -5,9 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.kkh.multimodule.common"
+    namespace = "com.kkh.common"
 }
 
-dependencies {
-
-}
+dependencies {}

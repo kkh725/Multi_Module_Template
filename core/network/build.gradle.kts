@@ -13,7 +13,7 @@ val localProps = rootProject.file("local.properties")
     } ?: throw GradleException("BASE_URL not found")
 
 android{
-    namespace = "com.kkh.multimodule.network"
+    namespace = "com.kkh.network"
 
     buildFeatures {
         buildConfig = true

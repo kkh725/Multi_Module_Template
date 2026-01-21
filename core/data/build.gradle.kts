@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.kkh.multimodule.data"
+    namespace = "com.kkh.data"
 }
 
 dependencies {

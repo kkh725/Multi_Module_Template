@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.kkh.api"
+    namespace = "com.kkh.feature.auth.api"
 }
 
 dependencies{}

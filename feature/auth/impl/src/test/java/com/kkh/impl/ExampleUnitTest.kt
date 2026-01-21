@@ -1,4 +1,4 @@
-package com.kkh.impl
+package com.kkh.feature.auth.impl
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertEquals

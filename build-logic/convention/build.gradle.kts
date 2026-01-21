@@ -31,54 +31,54 @@ gradlePlugin {
         register("androidApplicationCompose") {
             id = libs.plugins.multi.module.android.compose.get().pluginId
             implementationClass =
-                "com.kkh.multimodule.convention.AndroidApplicationComposeConventionPlugin"
+                "com.kkh.convention.AndroidApplicationComposeConventionPlugin"
         }
 
         register("androidApplication") {
             id = libs.plugins.multi.module.android.application.get().pluginId
             implementationClass =
-                "com.kkh.multimodule.convention.AndroidApplicationConventionPlugin"
+                "com.kkh.convention.AndroidApplicationConventionPlugin"
         }
 
         register("androidLibraryCompose") {
             id = libs.plugins.multi.module.android.library.compose.get().pluginId
-            implementationClass = "com.kkh.multimodule.convention.AndroidLibraryComposeConventionPlugin"
+            implementationClass = "com.kkh.convention.AndroidLibraryComposeConventionPlugin"
         }
 
         register("androidLibrary") {
             id = libs.plugins.multi.module.library.get().pluginId
             implementationClass =
-                "com.kkh.multimodule.convention.AndroidLibraryConventionPlugin"
+                "com.kkh.convention.AndroidLibraryConventionPlugin"
         }
 
         register("androidFeatureApi") {
             id = libs.plugins.multi.module.android.feature.api.get().pluginId
-            implementationClass = "com.kkh.multimodule.convention.AndroidFeatureApiConventionPlugin"
+            implementationClass = "com.kkh.convention.AndroidFeatureApiConventionPlugin"
         }
 
         register("androidFeatureImpl") {
             id = libs.plugins.multi.module.android.feature.impl.get().pluginId
-            implementationClass = "com.kkh.multimodule.convention.AndroidFeatureImplConventionPlugin"
+            implementationClass = "com.kkh.convention.AndroidFeatureImplConventionPlugin"
         }
 
         register("androidTest") {
             id = libs.plugins.multi.module.android.test.get().pluginId
-            implementationClass = "com.kkh.multimodule.convention.AndroidTestConventionPlugin"
+            implementationClass = "com.kkh.convention.AndroidTestConventionPlugin"
         }
 
         register("hilt") {
             id = libs.plugins.multi.module.hilt.get().pluginId
-            implementationClass = "com.kkh.multimodule.convention.HiltConventionPlugin"
+            implementationClass = "com.kkh.convention.HiltConventionPlugin"
         }
 
         register("network") {
             id = libs.plugins.multi.module.network.get().pluginId
-            implementationClass = "com.kkh.multimodule.convention.NetWorkConventionPlugin"
+            implementationClass = "com.kkh.convention.NetWorkConventionPlugin"
         }
 
         register("androidRoom") {
             id = libs.plugins.multi.module.room.get().pluginId
-            implementationClass = "com.kkh.multimodule.convention.AndroidRoomConventionPlugin"
+            implementationClass = "com.kkh.convention.AndroidRoomConventionPlugin"
         }
     }
 }

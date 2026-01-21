@@ -1,0 +1,44 @@
+package com.kkh.common.base
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
+
+abstract class BaseViewModel<S : UiState, E : UiEvent>(
+    initialState: S,
+) : ViewModel() {
+    private val _state = MutableStateFlow<S>(initialState)
+    val state = _state.asStateFlow()
+
+    protected val currentState: S get() = _state.value
+
+    private val _intents: Channel<E> = Channel(BUFFERED)
+    private val _reducer = Channel<S.() -> S>(BUFFERED)
+
+    private val _sideEffect = Channel<UiEffect>(BUFFERED)
+    val sideEffect = _sideEffect.receiveAsFlow()
+
+    init {
+        _intents.receiveAsFlow()
+            .onEach(::processEvent)
+            .launchIn(viewModelScope)
+
+        _reducer.receiveAsFlow()
+            .onEach { reduce -> _state.value = currentState.reduce() }
+            .launchIn(viewModelScope)
+    }
+
+    fun sendEvent(event: E) = viewModelScope.launch { _intents.send(event) }
+
+    protected abstract suspend fun processEvent(event: E)
+
+    protected fun setState(reduce: S.() -> S) = viewModelScope.launch { _reducer.send(reduce) }
+    protected fun postEffect(effect: UiEffect) = viewModelScope.launch { _sideEffect.send(effect) }
+}

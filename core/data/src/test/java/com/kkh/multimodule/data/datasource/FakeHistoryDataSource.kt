@@ -1,7 +1,7 @@
-package com.kkh.multimodule.data.datasource
+package com.kkh.data.datasource
 
-import com.kkh.multimodule.network.datasource.HistoryDataSource
-import com.kkh.multimodule.network.dto.response.HistoryResponse
+import com.kkh.network.datasource.HistoryDataSource
+import com.kkh.network.dto.response.HistoryResponse
 
 class FakeHistoryDataSource : HistoryDataSource {
 
