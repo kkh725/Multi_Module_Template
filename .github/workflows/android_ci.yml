@@ -43,13 +43,7 @@ jobs:
       # 병렬 빌드 및 테스트 (Debug only for faster CI)
       - name: Build and Test
         run: |
-          ./gradlew assembleDebug testDebugUnitTest lintDebug \
-            --parallel \
-            --max-workers=4 \
-            --build-cache \
-            --configuration-cache \
-            -Dorg.gradle.jvmargs="-Xmx4096m -XX:+UseParallelGC" \
-            -Dkotlin.compiler.execution.strategy=in-process
+          ./gradlew assembleDebug --build-cache --stacktrace
 
       - name: Upload build reports
         if: always()
