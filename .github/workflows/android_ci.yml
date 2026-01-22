@@ -26,14 +26,14 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Set up local.properties
+        run: |
+          echo "KKH_SERVER_BASE_URL=${{ secrets.KKH_SERVER_BASE_URL }}" > local.properties
+
       - name: Build with Gradle
-        env:
-          KKH_SERVER_BASE_URL: ${{ secrets.KKH_SERVER_BASE_URL }}
         run: ./gradlew build
 
       - name: Run tests
-        env:
-          KKH_SERVER_BASE_URL: ${{ secrets.KKH_SERVER_BASE_URL }}
         run: ./gradlew test
 
       - name: Upload build reports
