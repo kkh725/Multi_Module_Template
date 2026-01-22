@@ -6,8 +6,162 @@ on:
   pull_request:
     branches: [ master, main, develop ]
 
+# 동시 실행 제어 - 같은 브랜치의 이전 실행 취소
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  # 변경된 모듈 감지
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      app: ${{ steps.filter.outputs.app }}
+      core-common: ${{ steps.filter.outputs.core-common }}
+      core-data: ${{ steps.filter.outputs.core-data }}
+      core-database: ${{ steps.filter.outputs.core-database }}
+      core-datastore: ${{ steps.filter.outputs.core-datastore }}
+      core-designsystem: ${{ steps.filter.outputs.core-designsystem }}
+      core-domain: ${{ steps.filter.outputs.core-domain }}
+      core-navigation: ${{ steps.filter.outputs.core-navigation }}
+      core-network: ${{ steps.filter.outputs.core-network }}
+      feature-auth: ${{ steps.filter.outputs.feature-auth }}
+      feature-test: ${{ steps.filter.outputs.feature-test }}
+      build-logic: ${{ steps.filter.outputs.build-logic }}
+      gradle-config: ${{ steps.filter.outputs.gradle-config }}
+      affected-modules: ${{ steps.affected.outputs.modules }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect file changes
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            app:
+              - 'app/**'
+            core-common:
+              - 'core/common/**'
+            core-data:
+              - 'core/data/**'
+            core-database:
+              - 'core/database/**'
+            core-datastore:
+              - 'core/datastore/**'
+            core-designsystem:
+              - 'core/designsystem/**'
+            core-domain:
+              - 'core/domain/**'
+            core-navigation:
+              - 'core/navigation/**'
+            core-network:
+              - 'core/network/**'
+            feature-auth:
+              - 'feature/auth/**'
+            feature-test:
+              - 'feature/test/**'
+            build-logic:
+              - 'build-logic/**'
+            gradle-config:
+              - 'build.gradle.kts'
+              - 'settings.gradle.kts'
+              - 'gradle/**'
+              - 'gradle.properties'
+
+      # 의존성 그래프 기반 영향받는 모듈 분석
+      - name: Determine affected modules
+        id: affected
+        run: |
+          # 모듈 의존성 그래프 정의
+          # core-common: 기반 모듈 (다른 core 모듈들이 의존)
+          # core-network, core-datastore, core-database: core-common에 의존
+          # core-domain: core-common에 의존
+          # core-data: core-domain, core-network, core-datastore, core-database에 의존
+          # core-designsystem, core-navigation: UI 관련 모듈
+          # feature/*: core 모듈들에 의존
+          # app: 모든 feature 모듈에 의존
+
+          AFFECTED=""
+
+          # build-logic 또는 gradle 설정 변경시 전체 빌드
+          if [[ "${{ steps.filter.outputs.build-logic }}" == "true" ]] || \
+             [[ "${{ steps.filter.outputs.gradle-config }}" == "true" ]]; then
+            AFFECTED="all"
+          else
+            # core-common 변경시 -> 거의 모든 모듈 영향
+            if [[ "${{ steps.filter.outputs.core-common }}" == "true" ]]; then
+              AFFECTED="$AFFECTED :core:common :core:network :core:datastore :core:database :core:domain :core:data :feature:auth :feature:test :app"
+            fi
+
+            # core-network 변경시
+            if [[ "${{ steps.filter.outputs.core-network }}" == "true" ]]; then
+              AFFECTED="$AFFECTED :core:network :core:data :feature:auth :feature:test :app"
+            fi
+
+            # core-datastore 변경시
+            if [[ "${{ steps.filter.outputs.core-datastore }}" == "true" ]]; then
+              AFFECTED="$AFFECTED :core:datastore :core:data :feature:auth :feature:test :app"
+            fi
+
+            # core-database 변경시
+            if [[ "${{ steps.filter.outputs.core-database }}" == "true" ]]; then
+              AFFECTED="$AFFECTED :core:database :core:data :feature:auth :feature:test :app"
+            fi
+
+            # core-domain 변경시
+            if [[ "${{ steps.filter.outputs.core-domain }}" == "true" ]]; then
+              AFFECTED="$AFFECTED :core:domain :core:data :feature:auth :feature:test :app"
+            fi
+
+            # core-data 변경시
+            if [[ "${{ steps.filter.outputs.core-data }}" == "true" ]]; then
+              AFFECTED="$AFFECTED :core:data :feature:auth :feature:test :app"
+            fi
+
+            # core-designsystem 변경시
+            if [[ "${{ steps.filter.outputs.core-designsystem }}" == "true" ]]; then
+              AFFECTED="$AFFECTED :core:designsystem :feature:auth :feature:test :app"
+            fi
+
+            # core-navigation 변경시
+            if [[ "${{ steps.filter.outputs.core-navigation }}" == "true" ]]; then
+              AFFECTED="$AFFECTED :core:navigation :feature:auth :feature:test :app"
+            fi
+
+            # feature-auth 변경시
+            if [[ "${{ steps.filter.outputs.feature-auth }}" == "true" ]]; then
+              AFFECTED="$AFFECTED :feature:auth :app"
+            fi
+
+            # feature-test 변경시
+            if [[ "${{ steps.filter.outputs.feature-test }}" == "true" ]]; then
+              AFFECTED="$AFFECTED :feature:test :app"
+            fi
+
+            # app 변경시
+            if [[ "${{ steps.filter.outputs.app }}" == "true" ]]; then
+              AFFECTED="$AFFECTED :app"
+            fi
+
+            # 중복 제거
+            if [[ -n "$AFFECTED" ]]; then
+              AFFECTED=$(echo "$AFFECTED" | tr ' ' '\n' | sort -u | tr '\n' ' ' | xargs)
+            fi
+          fi
+
+          # 변경사항이 없으면 빈 문자열
+          if [[ -z "$AFFECTED" ]]; then
+            AFFECTED="none"
+          fi
+
+          echo "modules=$AFFECTED" >> $GITHUB_OUTPUT
+          echo "Affected modules: $AFFECTED"
+
+  # 영향받는 모듈 빌드 (병렬 처리)
   build:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.affected-modules != 'none'
     runs-on: ubuntu-latest
 
     steps:
@@ -37,16 +191,183 @@ jobs:
         run: |
           echo "KKH_SERVER_BASE_URL=${{ secrets.KKH_SERVER_BASE_URL }}" > local.properties
 
-      - name: Build with Gradle
-        run: ./gradlew build
+      # 전체 빌드 (build-logic 또는 gradle 설정 변경시)
+      - name: Build all modules
+        if: needs.detect-changes.outputs.affected-modules == 'all'
+        run: |
+          ./gradlew build \
+            --parallel \
+            --build-cache \
+            --configuration-cache \
+            --no-daemon \
+            -Dorg.gradle.workers.max=4
 
-      - name: Run tests
-        run: ./gradlew test
+      # 영향받는 모듈만 빌드 (병렬 처리)
+      - name: Build affected modules
+        if: needs.detect-changes.outputs.affected-modules != 'all'
+        run: |
+          MODULES="${{ needs.detect-changes.outputs.affected-modules }}"
 
-      - name: Upload build reports
+          # 각 모듈에 대해 build 태스크 생성
+          BUILD_TASKS=""
+          for module in $MODULES; do
+            BUILD_TASKS="$BUILD_TASKS ${module}:build"
+          done
+
+          echo "Building modules: $BUILD_TASKS"
+
+          ./gradlew $BUILD_TASKS \
+            --parallel \
+            --build-cache \
+            --configuration-cache \
+            --no-daemon \
+            -Dorg.gradle.workers.max=4
+
+  # 영향받는 모듈 테스트 (빌드와 병렬 실행)
+  test:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.affected-modules != 'none'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Gradle cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Set up local.properties
+        run: |
+          echo "KKH_SERVER_BASE_URL=${{ secrets.KKH_SERVER_BASE_URL }}" > local.properties
+
+      # 전체 테스트
+      - name: Test all modules
+        if: needs.detect-changes.outputs.affected-modules == 'all'
+        run: |
+          ./gradlew test \
+            --parallel \
+            --build-cache \
+            --configuration-cache \
+            --no-daemon \
+            -Dorg.gradle.workers.max=4
+
+      # 영향받는 모듈만 테스트
+      - name: Test affected modules
+        if: needs.detect-changes.outputs.affected-modules != 'all'
+        run: |
+          MODULES="${{ needs.detect-changes.outputs.affected-modules }}"
+
+          TEST_TASKS=""
+          for module in $MODULES; do
+            TEST_TASKS="$TEST_TASKS ${module}:test"
+          done
+
+          echo "Testing modules: $TEST_TASKS"
+
+          ./gradlew $TEST_TASKS \
+            --parallel \
+            --build-cache \
+            --configuration-cache \
+            --no-daemon \
+            -Dorg.gradle.workers.max=4
+
+      - name: Upload test reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: build-reports
-          path: '**/build/reports/'
+          name: test-reports
+          path: '**/build/reports/tests/'
           retention-days: 7
+
+  # Lint 검사 (병렬 실행)
+  lint:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.affected-modules != 'none'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Gradle cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Set up local.properties
+        run: |
+          echo "KKH_SERVER_BASE_URL=${{ secrets.KKH_SERVER_BASE_URL }}" > local.properties
+
+      # 전체 Lint
+      - name: Lint all modules
+        if: needs.detect-changes.outputs.affected-modules == 'all'
+        run: |
+          ./gradlew lint \
+            --parallel \
+            --build-cache \
+            --no-daemon
+
+      # 영향받는 모듈만 Lint
+      - name: Lint affected modules
+        if: needs.detect-changes.outputs.affected-modules != 'all'
+        run: |
+          MODULES="${{ needs.detect-changes.outputs.affected-modules }}"
+
+          LINT_TASKS=""
+          for module in $MODULES; do
+            LINT_TASKS="$LINT_TASKS ${module}:lint"
+          done
+
+          echo "Linting modules: $LINT_TASKS"
+
+          ./gradlew $LINT_TASKS \
+            --parallel \
+            --build-cache \
+            --no-daemon || true
+
+      - name: Upload lint reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-reports
+          path: '**/build/reports/lint*'
+          retention-days: 7
+
+  # 변경사항 없을 때 스킵 메시지
+  skip-notice:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.affected-modules == 'none'
+    runs-on: ubuntu-latest
+    steps:
+      - name: No changes detected
+        run: echo "No module changes detected. Skipping build."
