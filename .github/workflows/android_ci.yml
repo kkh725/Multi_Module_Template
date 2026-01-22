@@ -40,10 +40,10 @@ jobs:
         run: |
           echo "KKH_SERVER_BASE_URL=${{ secrets.KKH_SERVER_BASE_URL }}" > local.properties
 
-      # 병렬 빌드 및 테스트
+      # 병렬 빌드 및 테스트 (Debug only for faster CI)
       - name: Build and Test
         run: |
-          ./gradlew build test \
+          ./gradlew assembleDebug testDebugUnitTest lintDebug \
             --parallel \
             --max-workers=4 \
             --build-cache \
