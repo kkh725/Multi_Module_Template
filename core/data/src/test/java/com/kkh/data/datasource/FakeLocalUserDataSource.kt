@@ -8,6 +8,7 @@ class FakeLocalUserDataSource : LocalUserDataSource {
     private val _autoLogin = MutableStateFlow(false)
     override val autoLogin: Flow<Boolean> = _autoLogin
 
-    override suspend fun setAutoLogin(autoLogin: Boolean) { _autoLogin.value = autoLogin }
+    override suspend fun setAutoLogin(autoLogin: Boolean) {
+        _autoLogin.value = autoLogin
+    }
 }
-
