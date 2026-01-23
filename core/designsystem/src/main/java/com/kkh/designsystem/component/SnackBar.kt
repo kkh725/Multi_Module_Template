@@ -28,7 +28,10 @@ import com.kkh.common.ui.SnackBarState
 import com.kkh.designsystem.R
 
 @Composable
-fun TestSnackBar(snackBarData: SnackbarData) {
+fun TestSnackBar(
+    snackBarData: SnackbarData,
+    modifier: Modifier = Modifier,
+) {
     val state = SnackBarState.fromString(snackBarData.visuals.message)
     val (imageRes, bgColor) =
         when (state) {
@@ -38,8 +41,9 @@ fun TestSnackBar(snackBarData: SnackbarData) {
 
     val (topPadding, bottomPadding, alignment) =
         when (state) {
-            is SnackBarState.TextOnly, is SnackBarState.Info ->
+            is SnackBarState.TextOnly, is SnackBarState.Info -> {
                 Triple(0.dp, 82.dp, Alignment.BottomCenter)
+            }
         }
 
     Box(

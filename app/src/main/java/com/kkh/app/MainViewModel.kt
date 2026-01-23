@@ -12,8 +12,9 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel
     @Inject
-    constructor(authRepository: AuthRepository) :
-    ViewModel() {
+    constructor(
+        authRepository: AuthRepository,
+    ) : ViewModel() {
         // coldStream to hotStream
         internal val autoLogin: StateFlow<Boolean?> =
             authRepository.autoLogin

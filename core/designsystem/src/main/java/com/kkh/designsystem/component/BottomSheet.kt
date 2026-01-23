@@ -27,6 +27,7 @@ import com.kkh.common.ui.rememberTestBottomSheetScaffoldState
 @Composable
 fun TestBottomSheet(
     bottomSheetState: TestBottomSheetScaffoldState,
+    modifier: Modifier = Modifier,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     BottomSheetScaffold(
@@ -53,7 +54,7 @@ fun TestBottomSheet(
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true, backgroundColor = 0xFF000000)
 @Composable
-fun TestBottomSheetPreview() {
+private fun TestBottomSheetPreview() {
     val testBottomSheetState = rememberTestBottomSheetScaffoldState()
 
     LaunchedEffect(Unit) {
@@ -71,18 +72,19 @@ fun TestBottomSheetPreview() {
 
     TestBottomSheet(
         bottomSheetState = testBottomSheetState,
-    ) { padding ->
-        Box(
-            Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .background(Color(0xFF000000)),
-        ) {
-            Text(
-                text = "Main Content",
-                color = Color.White,
-                modifier = Modifier.padding(24.dp),
-            )
-        }
-    }
+        content = { padding ->
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .background(Color(0xFF000000)),
+            ) {
+                Text(
+                    text = "Main Content",
+                    color = Color.White,
+                    modifier = Modifier.padding(24.dp),
+                )
+            }
+        },
+    )
 }

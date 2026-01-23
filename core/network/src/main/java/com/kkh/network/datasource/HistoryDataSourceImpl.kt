@@ -8,8 +8,9 @@ import jakarta.inject.Inject
 
 class HistoryDataSourceImpl
     @Inject
-    constructor(private val historyApi: HistoryApi) :
-    HistoryDataSource {
+    constructor(
+        private val historyApi: HistoryApi,
+    ) : HistoryDataSource {
         override suspend fun getTimerHistories(
             userId: String,
             startDate: String,

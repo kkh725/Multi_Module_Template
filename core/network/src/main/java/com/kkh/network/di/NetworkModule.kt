@@ -24,25 +24,25 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(): OkHttpClient =
-        OkHttpClient.Builder()
+        OkHttpClient
+            .Builder()
             .addInterceptor(
                 HttpLoggingInterceptor().apply {
                     level = HttpLoggingInterceptor.Level.BODY
                 },
-            )
-            .build()
+            ).build()
 
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         val json = Json { ignoreUnknownKeys = true }
 
-        return Retrofit.Builder()
+        return Retrofit
+            .Builder()
             .baseUrl(BuildConfig.KKH_SERVER_BASE_URL)
             .addConverterFactory(
                 json.asConverterFactory("application/json".toMediaType()),
-            )
-            .client(okHttpClient)
+            ).client(okHttpClient)
             .build()
     }
 }

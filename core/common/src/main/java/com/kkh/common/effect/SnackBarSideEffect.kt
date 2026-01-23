@@ -18,8 +18,7 @@ sealed interface SnackBarSideEffect : UiEffect {
     data class Matching(
         @param:StringRes override val resId: Int,
         val count: Int? = null,
-    ) :
-        SnackBarSideEffect
+    ) : SnackBarSideEffect
 }
 
 fun SnackBarSideEffect.handle(

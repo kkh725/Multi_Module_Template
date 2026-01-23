@@ -17,6 +17,8 @@ class TestContract {
     sealed class TestEvent : UiEvent {
         data object OnButtonClick : TestEvent()
 
-        data class OnNewMatchingCardClick(val content: @Composable () -> Unit) : TestEvent()
+        data class OnNewMatchingCardClick(
+            val content: @Composable () -> Unit,
+        ) : TestEvent()
     }
 }

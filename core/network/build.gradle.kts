@@ -5,10 +5,12 @@ plugins {
 }
 
 val localProps =
-    rootProject.file("local.properties")
+    rootProject
+        .file("local.properties")
         .reader()
         .useLines { lines ->
-            lines.find { it.startsWith("KKH_SERVER_BASE_URL=") }
+            lines
+                .find { it.startsWith("KKH_SERVER_BASE_URL=") }
                 ?.substringAfter("=")
                 ?.trim()
         } ?: throw GradleException("BASE_URL not found")

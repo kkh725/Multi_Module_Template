@@ -35,9 +35,10 @@ internal object DatabaseModule {
     fun providesNiaDatabase(
         @ApplicationContext context: Context,
     ): MyAppDatabase =
-        Room.databaseBuilder(
-            context,
-            MyAppDatabase::class.java,
-            "kkh-database",
-        ).build()
+        Room
+            .databaseBuilder(
+                context,
+                MyAppDatabase::class.java,
+                "kkh-database",
+            ).build()
 }

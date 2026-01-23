@@ -3,9 +3,13 @@ package com.kkh.common.ui
 sealed class SnackBarState {
     abstract val message: String
 
-    data class TextOnly(override val message: String) : SnackBarState()
+    data class TextOnly(
+        override val message: String,
+    ) : SnackBarState()
 
-    data class Info(override val message: String) : SnackBarState()
+    data class Info(
+        override val message: String,
+    ) : SnackBarState()
 
     companion object {
         private const val INFO_TYPE = "Info"

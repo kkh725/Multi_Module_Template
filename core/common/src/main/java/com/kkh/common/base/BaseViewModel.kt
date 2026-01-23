@@ -26,11 +26,13 @@ abstract class BaseViewModel<S : UiState, E : UiEvent>(
     val sideEffect = _sideEffect.receiveAsFlow()
 
     init {
-        _intents.receiveAsFlow()
+        _intents
+            .receiveAsFlow()
             .onEach(::processEvent)
             .launchIn(viewModelScope)
 
-        _reducer.receiveAsFlow()
+        _reducer
+            .receiveAsFlow()
             .onEach { reduce -> _state.value = currentState.reduce() }
             .launchIn(viewModelScope)
     }

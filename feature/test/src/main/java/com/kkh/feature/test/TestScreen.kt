@@ -27,19 +27,23 @@ import com.skydoves.compose.stability.runtime.TraceRecomposition
 @Suppress("NonSkippableComposable")
 @TraceRecomposition
 @Composable
-fun TestRoute(viewModel: TestViewModel = hiltViewModel()) {
+fun TestRoute(
+    modifier: Modifier = Modifier,
+    viewModel: TestViewModel = hiltViewModel(),
+) {
     val uiState by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     LaunchedEffect(viewModel) {
         viewModel.sideEffect.collect { effect ->
             when {
-                effect is SnackBarSideEffect ->
+                effect is SnackBarSideEffect -> {
                     effect.handle { _, _ ->
                         val message = effect.getMessage(context)
 
                         viewModel.effectHelper.sendEffect(ShowSnackBar(Info(message)))
                     }
+                }
             }
         }
     }

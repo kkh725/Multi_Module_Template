@@ -2,12 +2,11 @@ package com.kkh.common
 
 import kotlin.coroutines.cancellation.CancellationException
 
-suspend inline fun <T, R> T.suspendRunCatching(crossinline block: suspend T.() -> R): Result<R> {
-    return try {
+suspend inline fun <T, R> T.suspendRunCatching(crossinline block: suspend T.() -> R): Result<R> =
+    try {
         Result.success(block())
     } catch (e: CancellationException) {
         throw e
     } catch (t: Throwable) {
         Result.failure(t)
     }
-}

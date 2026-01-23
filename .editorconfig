@@ -1,26 +1,61 @@
 root = true
 
+# ===== 모든 파일 공통 설정 =====
 [*]
 charset = utf-8
 end_of_line = lf
 indent_size = 4
 indent_style = space
-insert_final_newline = true
-max_line_length = 120
 trim_trailing_whitespace = true
 
+# ===== Kotlin/Gradle 파일 =====
 [*.{kt,kts}]
-ktlint_function_naming_ignore_when_annotated_with = Composable
-
-; Property 이름 규칙 끔 (ex: _autoLogin 같은 backing field 허용)
-ktlint_standard_property-naming = disabled
-
-; 파일명 규칙 끔 (FeatureHomeScreen.kt 같은 거 허용)
-ktlint_standard_filename = disabled
-
-; 애노테이션 줄바꿈 규칙 끔 (Compose 코드 가독성 때문에)
-ktlint_standard_annotation = disabled
-
-; 파일 끝에 자동 개행 추가 안 함
+max_line_length = 140
 insert_final_newline = false
 
+# ----- Kotlin 코드 스타일 -----
+# 한 줄 함수는 = 표현식 사용 (fun test() = 1)
+ktlint_standard_function-expression-body = enabled
+
+# when/if 한 줄일 때 중괄호 제거
+ktlint_standard_multiline-expression-wrapping = disabled
+
+# 불필요한 중괄호 제거
+ktlint_standard_unnecessary-parentheses-before-trailing-lambda = enabled
+
+# 멀티 스페이스 제거
+ktlint_standard_no-multi-spaces = enabled
+
+# wrapping 규칙 비활성화
+ktlint_standard_wrapping = disabled
+
+# trailing-comma 비활성화 (wrapping 의존성 충돌 방지)
+ktlint_standard_trailing-comma-on-call-site = disabled
+ktlint_standard_trailing-comma-on-declaration-site = disabled
+
+# ----- Kotlin 네이밍 규칙 완화 -----
+# backing field 허용 (_autoLogin 등)
+ktlint_standard_backing-property-naming = disabled
+ktlint_standard_property-naming = disabled
+
+# 파일명 규칙 끄기 (FeatureHomeScreen.kt 허용)
+ktlint_standard_filename = disabled
+
+# 애노테이션 줄바꿈 규칙 끄기
+ktlint_standard_annotation = disabled
+
+# ----- Compose 전용 설정 -----
+# Composable 함수는 대문자 시작 허용
+ktlint_function_naming_ignore_when_annotated_with = Composable
+
+# Modifier 체크는 public 함수만
+compose_check_modifiers_for_visibility = only_public
+
+# Preview는 Modifier 체크 무시
+compose_modifier_missing_ignore_annotated = Preview
+
+# ===== Gradle 파일 전용 (kts) =====
+[*.kts]
+# Gradle DSL은 trailing comma 불필요
+ktlint_standard_trailing-comma-on-call-site = disabled
+ktlint_standard_trailing-comma-on-declaration-site = disabled

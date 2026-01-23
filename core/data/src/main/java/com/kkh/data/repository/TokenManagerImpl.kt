@@ -7,7 +7,8 @@ import javax.inject.Inject
 
 class TokenManagerImpl
     @Inject
-    constructor(private val localTokenDataSource: LocalTokenDataSource) :
-    TokenManager {
+    constructor(
+        private val localTokenDataSource: LocalTokenDataSource,
+    ) : TokenManager {
         override suspend fun getAccessToken(): String = localTokenDataSource.accessToken.first()
     }
