@@ -21,6 +21,16 @@ allprojects {
         verbose.set(true)
         outputToConsole.set(true)
     }
+
+    tasks.withType<Test>().configureEach {
+        useJUnitPlatform()
+        filter {
+            isFailOnNoMatchingTests = false
+        }
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
+    }
 }
 
 apply(from = "gradle/dependencyGraph.gradle")
