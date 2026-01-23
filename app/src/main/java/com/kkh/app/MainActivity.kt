@@ -15,17 +15,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
-import com.kkh.common.effect.CommonEffect
-import com.kkh.common.effect.EffectHelper
 import com.kkh.app.navigation.TestApp
 import com.kkh.app.ui.theme.TestModuleTheme
+import com.kkh.common.effect.CommonEffect
+import com.kkh.common.effect.EffectHelper
+import com.kkh.common.ui.SnackBarState
+import com.kkh.common.ui.TestBottomSheetScaffoldState
+import com.kkh.common.ui.rememberTestBottomSheetScaffoldState
 import com.kkh.navigation.AuthRoute
 import com.kkh.navigation.NavigationEvent
 import com.kkh.navigation.NavigationHelper
 import com.kkh.navigation.PauseRoute
-import com.kkh.common.ui.SnackBarState
-import com.kkh.common.ui.TestBottomSheetScaffoldState
-import com.kkh.common.ui.rememberTestBottomSheetScaffoldState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -33,9 +33,9 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
     @Inject
     lateinit var effectHelper: EffectHelper
+
     @Inject
     lateinit var navigationHelper: NavigationHelper
 
@@ -87,7 +87,7 @@ class MainActivity : ComponentActivity() {
             TestModuleTheme {
                 TestApp(
                     navBackStack = navBackStack,
-                    bottomSheetState = sheetState
+                    bottomSheetState = sheetState,
                 )
             }
         }
@@ -99,7 +99,7 @@ class MainActivity : ComponentActivity() {
             val snackBarHostState = bottomSheetState.sheetState.snackbarHostState
 
             when (event) {
-                is CommonEffect.ShowSnackBar ->{
+                is CommonEffect.ShowSnackBar -> {
                     snackBarHostState.currentSnackbarData?.dismiss()
                     val raw = SnackBarState.toRaw(event.snackBarState)
                     snackBarHostState.showSnackbar(raw)

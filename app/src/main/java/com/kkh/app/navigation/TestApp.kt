@@ -6,9 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
-import com.kkh.designsystem.component.TestBottomSheet
-import com.kkh.navigation.Route
 import com.kkh.common.ui.TestBottomSheetScaffoldState
+import com.kkh.designsystem.component.TestBottomSheet
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -17,11 +16,11 @@ internal fun TestApp(
     bottomSheetState: TestBottomSheetScaffoldState,
 ) {
     TestBottomSheet(
-        bottomSheetState = bottomSheetState
-    ){ paddingValues ->
+        bottomSheetState = bottomSheetState,
+    ) { paddingValues ->
         TestAppNavHost(
             navBackStack = navBackStack,
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier.padding(paddingValues),
         )
     }
 }

@@ -11,7 +11,7 @@ import androidx.compose.runtime.remember
 @OptIn(ExperimentalMaterial3Api::class)
 class TestBottomSheetScaffoldState(
     initialContent: @Composable () -> Unit = {},
-    val sheetState: BottomSheetScaffoldState
+    val sheetState: BottomSheetScaffoldState,
 ) {
     private val _contentState = mutableStateOf<(@Composable () -> Unit)>(initialContent)
     val content: @Composable () -> Unit get() = _contentState.value
@@ -29,7 +29,7 @@ fun rememberTestBottomSheetScaffoldState(): TestBottomSheetScaffoldState {
 
     return remember(scaffoldState) {
         TestBottomSheetScaffoldState(
-            sheetState = scaffoldState
+            sheetState = scaffoldState,
         )
     }
 }

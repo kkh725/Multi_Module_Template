@@ -1,8 +1,8 @@
 package com.kkh.database
 
 import androidx.test.platform.app.InstrumentationRegistry
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 
 class ExampleInstrumentedTest {
     @Test

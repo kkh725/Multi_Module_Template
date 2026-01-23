@@ -10,6 +10,17 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.room) apply false
     alias(libs.plugins.stability.analyzer) apply false
+    alias(libs.plugins.ktlint)
+}
+
+allprojects {
+    apply(plugin = "org.jlleitschuh.gradle.ktlint")
+
+    configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+        android.set(true)
+        verbose.set(true)
+        outputToConsole.set(true)
+    }
 }
 
 apply(from = "gradle/dependencyGraph.gradle")

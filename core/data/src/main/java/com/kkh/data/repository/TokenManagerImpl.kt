@@ -5,7 +5,9 @@ import com.kkh.network.interceptor.TokenManager
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
-class TokenManagerImpl @Inject constructor(private val localTokenDataSource: LocalTokenDataSource) :
+class TokenManagerImpl
+    @Inject
+    constructor(private val localTokenDataSource: LocalTokenDataSource) :
     TokenManager {
-    override suspend fun getAccessToken(): String = localTokenDataSource.accessToken.first()
-}
+        override suspend fun getAccessToken(): String = localTokenDataSource.accessToken.first()
+    }

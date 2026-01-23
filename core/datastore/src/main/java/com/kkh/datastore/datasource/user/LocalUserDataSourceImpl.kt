@@ -9,12 +9,18 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Named
 
-class LocalUserDataSourceImpl @Inject constructor(
-    @param:Named("user") private val dataStore: DataStore<Preferences>
-) : LocalUserDataSource {
-    override val autoLogin: Flow<Boolean> = dataStore.getValue(AUTO_LOGIN, false)
+class LocalUserDataSourceImpl
+    @Inject
+    constructor(
+        @param:Named("user") private val dataStore: DataStore<Preferences>,
+    ) : LocalUserDataSource {
+        override val autoLogin: Flow<Boolean> = dataStore.getValue(AUTO_LOGIN, false)
 
-    override suspend fun setAutoLogin(autoLogin: Boolean) { dataStore.setValue(AUTO_LOGIN, autoLogin) }
+        override suspend fun setAutoLogin(autoLogin: Boolean) {
+            dataStore.setValue(AUTO_LOGIN, autoLogin)
+        }
 
-    companion object { private val AUTO_LOGIN = booleanPreferencesKey("AUTO_LOGIN") }
-}
+        companion object {
+            private val AUTO_LOGIN = booleanPreferencesKey("AUTO_LOGIN")
+        }
+    }

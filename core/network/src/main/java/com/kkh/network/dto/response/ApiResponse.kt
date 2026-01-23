@@ -4,23 +4,23 @@ import android.util.Log
 import retrofit2.Response
 
 data class BaseResponse<T>(
-    val result : String,
-    val data : T?,
-    val code : Int,
-){
-    fun isSuccess() : Boolean {
+    val result: String,
+    val data: T?,
+    val code: Int,
+) {
+    fun isSuccess(): Boolean {
         return code == 200
     }
 }
 
 typealias ApiResponse<T> = Response<BaseResponse<T>>
 
-enum class HttpErrorStatus(val code: Int, val message: String){
+enum class HttpErrorStatus(val code: Int, val message: String) {
     UNAUTHORIZED(401, "인증 오류가 발생했습니다."),
-    INVALID_INPUT(400,"입력값이 올바르지 않습니다."),
+    INVALID_INPUT(400, "입력값이 올바르지 않습니다."),
     DUPLICATE(409, "해당 시간에 이미 진행중인 타이머가 존재합니다."),
     INTERNAL_SERVER_ERROR(500, "서버 내부 오류"),
-    NOT_FOUND_TIMER(404,"타이머가 존재하지 않습니다.")
+    NOT_FOUND_TIMER(404, "타이머가 존재하지 않습니다."),
 }
 
 fun handleHttpError(code: Int): Exception {

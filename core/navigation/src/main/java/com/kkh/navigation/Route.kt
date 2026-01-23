@@ -12,7 +12,9 @@ data object AuthGraphBaseRoute : Route
 sealed interface AuthGraph : Route {
     @Serializable
     data class LoginRoute(val historyId: Int) : AuthGraph {
-        companion object { const val KEY_HISTORY_ID = "historyId" }
+        companion object {
+            const val KEY_HISTORY_ID = "historyId"
+        }
     }
 
     @Serializable
@@ -23,8 +25,10 @@ sealed interface AuthGraph : Route {
 }
 
 @Serializable
-data class TestRoute(val testId : Int) : Route {
-    companion object { const val KEY_TEST_ID = "testId" }
+data class TestRoute(val testId: Int) : Route {
+    companion object {
+        const val KEY_TEST_ID = "testId"
+    }
 }
 
 @Serializable

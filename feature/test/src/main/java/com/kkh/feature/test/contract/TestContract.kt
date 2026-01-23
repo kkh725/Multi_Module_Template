@@ -10,12 +10,13 @@ import kotlinx.collections.immutable.persistentListOf
 class TestContract {
     @Immutable
     data class TestState(
-        val isLoading : Boolean = false,
-        val list : ImmutableList<String> = persistentListOf()
+        val isLoading: Boolean = false,
+        val list: ImmutableList<String> = persistentListOf(),
     ) : UiState
 
     sealed class TestEvent : UiEvent {
         data object OnButtonClick : TestEvent()
-        data class OnNewMatchingCardClick(val content : @Composable () -> Unit) : TestEvent()
+
+        data class OnNewMatchingCardClick(val content: @Composable () -> Unit) : TestEvent()
     }
 }
