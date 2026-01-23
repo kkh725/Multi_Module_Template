@@ -10,7 +10,18 @@ max_line_length = 120
 trim_trailing_whitespace = true
 
 [*.{kt,kts}]
+; Compose 함수는 이름 규칙 예외 허용
 ktlint_function_naming_ignore_when_annotated_with = Composable
+
+; Property 이름 규칙 끔 (ex: _autoLogin 같은 backing field 허용)
 ktlint_standard_property-naming = disabled
+
+; 파일명 규칙 끔 (FeatureHomeScreen.kt 같은 거 허용)
 ktlint_standard_filename = disabled
+
+; 애노테이션 줄바꿈 규칙 끔 (Compose 코드 가독성 때문에)
 ktlint_standard_annotation = disabled
+
+; 파일 끝에 자동 개행 추가 안 함
+insert_final_newline = false
+

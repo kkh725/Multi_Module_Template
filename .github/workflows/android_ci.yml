@@ -41,3 +41,7 @@ jobs:
 
       - name: Test
         run: ./gradlew test --stacktrace --no-daemon
+
+      - name: Build (Debug)
+        run: ./gradlew assembleDebug --no-daemon
+
