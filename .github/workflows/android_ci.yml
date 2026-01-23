@@ -22,7 +22,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          generate-job-summary: true
+          add-job-summary: true
           # PR 빋드: 캐시 읽기, develop push: 캐시 업데이트
           cache-read-only: ${{ github.event_name == 'pull_request' }}
 
