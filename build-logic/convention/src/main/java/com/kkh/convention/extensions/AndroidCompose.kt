@@ -20,6 +20,8 @@ internal fun Project.configureAndroidCompose(
         }
 
         dependencies {
+            add("ktlintRuleset", "io.nlopez.compose.rules:ktlint:0.4.28")
+
             val bom = libs.findLibrary("androidx-compose-bom").get()
             "implementation"(platform(bom))
             "androidTestImplementation"(platform(bom))

@@ -44,7 +44,7 @@ room = "2.8.4"
 stability = "0.6.6"
 
 # ktlint
-ktlint = "12.1.2"
+ktlint = "14.0.1"
 
 # immutable
 immutable = "0.4.0"
