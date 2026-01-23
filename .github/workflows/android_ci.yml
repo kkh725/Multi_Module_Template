@@ -2,36 +2,29 @@ name: Android CI
 
 on:
   push:
-    branches: [ master, main, develop ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ master, main, develop ]
+    branches: [ "master" ]
 
 jobs:
-  build:
+  check:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
 
     steps:
       - uses: actions/checkout@v4
-
-      # 통합 캐시
-      - name: Cache Gradle and Dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            ~/.konan
-            ~/.kotlin
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', '**/libs.versions.toml') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          generate-job-summary: true
+          # PR 빋드: 캐시 읽기, develop push: 캐시 업데이트
+          cache-read-only: ${{ github.event_name == 'pull_request' }}
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -40,15 +33,11 @@ jobs:
         run: |
           echo "KKH_SERVER_BASE_URL=${{ secrets.KKH_SERVER_BASE_URL }}" > local.properties
 
-      # 병렬 빌드 및 테스트 (Debug only for faster CI)
-      - name: Build and Test
-        run: |
-          ./gradlew assembleDebug --build-cache --stacktrace
+      - name: Decode keystore file
+        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > ./app/upload-keystore.jks
 
-      - name: Upload build reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-reports
-          path: '**/build/reports/'
-          retention-days: 7
+      - name: KtlintCheck
+        run: ./gradlew ktlintcheck --no-daemon
+
+      - name: Test
+        run: ./gradlew test --stacktrace --no-daemon
