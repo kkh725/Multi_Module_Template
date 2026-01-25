@@ -42,23 +42,22 @@ jobs:
             -   name: Decode keystore file
                 run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > ./app/upload-keystore.jks
 
-            #            -   name: KtlintCheck
-            #                run: ./gradlew ktlintCheck --no-daemon
-            #
-            #            -   name: Test
-            #                run: ./gradlew test --stacktrace --no-daemon
-            #
+            -   name: KtlintCheck
+                run: ./gradlew ktlintCheck --no-daemon
+
+            -   name: Test
+                run: ./gradlew test --stacktrace --no-daemon
+
             -   name: Compile Check (Debug)
                 run: ./gradlew compileDebugKotlin compileDebugJavaWithJavac --no-daemon
 
-            # script 를 통해 dependency graph 생성
             -   name: Generate dependency graph
                 run: |
                     chmod +x scripts/update-dependency-graph.sh
                     ./scripts/update-dependency-graph.sh
 
             # CI에서 생성된 그래프 vs PR target branch(master)의 그래프 비교 후 auto 커밋
-            -   name: Check dependency graph update
+            -   name: Check dependency graph update & auto commit
                 run: |
                     git fetch origin ${{ github.base_ref }}
 
@@ -70,11 +69,10 @@ jobs:
 
                     # commit -> push
                     git add docs/module-deps.md
-                    git commit -m "[github-actions] update module dependency graph " || true
+                    git commit -m "[github-actions] update dependency graph " || true
                     git push origin HEAD:${{ github.head_ref }}
 
                     echo "auto process success"
 
                     exit 0
                     fi
-
