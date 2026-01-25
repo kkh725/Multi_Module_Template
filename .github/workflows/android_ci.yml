@@ -10,8 +10,13 @@ jobs:
     check:
         runs-on: ubuntu-latest
 
+        permissions:
+            contents: write
+
         steps:
             -   uses: actions/checkout@v4
+                with:
+                    fetch-depth: 0
 
             -   name: Set up JDK 21
                 uses: actions/setup-java@v4
@@ -36,12 +41,12 @@ jobs:
             -   name: Decode keystore file
                 run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > ./app/upload-keystore.jks
 
-#            -   name: KtlintCheck
-#                run: ./gradlew ktlintCheck --no-daemon
-#
-#            -   name: Test
-#                run: ./gradlew test --stacktrace --no-daemon
-#
+            #            -   name: KtlintCheck
+            #                run: ./gradlew ktlintCheck --no-daemon
+            #
+            #            -   name: Test
+            #                run: ./gradlew test --stacktrace --no-daemon
+            #
             -   name: Compile Check (Debug)
                 run: ./gradlew compileDebugKotlin compileDebugJavaWithJavac --no-daemon
 
@@ -51,19 +56,24 @@ jobs:
                     chmod +x scripts/update-dependency-graph.sh
                     ./scripts/update-dependency-graph.sh
 
-            # PR target module-deps vs local module-deps
-            # PR target branch와 비교
-            -   name: Check for changes
+            # CI에서 생성된 그래프 vs PR target branch(master)의 그래프 비교 후 auto 커밋
+            -   name: Check dependency graph update
                 run: |
                     git fetch origin ${{ github.base_ref }}
 
-                    # master에 파일이 없으면 자동 통과하지 않도록
-                    if git diff --exit-code origin/${{ github.base_ref }}...HEAD -- docs/module-deps.md; then
-                      echo "✅ No changes in dependency graph"
+                    if git diff --quiet origin/${{ github.base_ref }} -- docs/module-deps.md; then
+                    echo "No changes in dependency graph"
                     else
-                      echo "❌ Dependency graph has changed or is new"
-                      echo ""
-                      echo "Diff:"
-                      git diff origin/${{ github.base_ref }}...HEAD -- docs/module-deps.md
-                      exit 1
+                    git config user.name "github-actions[bot]"
+                    git config user.email "github-actions[bot]@users.noreply.github.com"
+
+                    # commit -> push
+                    git add docs/module-deps.md
+                    git commit -m "[github-actions] update module dependency graph " || true
+                    git push origin HEAD:${{ github.head_ref }}
+
+                    echo "Dependency graph updated and committed automatically."
+
+                    exit 0
                     fi
+
