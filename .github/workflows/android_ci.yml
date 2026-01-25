@@ -42,8 +42,8 @@ jobs:
 #            -   name: Test
 #                run: ./gradlew test --stacktrace --no-daemon
 #
-#            -   name: Compile Check (Debug)
-#                run: ./gradlew compileDebugKotlin compileDebugJavaWithJavac --no-daemon
+            -   name: Compile Check (Debug)
+                run: ./gradlew compileDebugKotlin compileDebugJavaWithJavac --no-daemon
 
             # script 를 통해 dependency graph 생성
             -   name: Generate dependency graph
