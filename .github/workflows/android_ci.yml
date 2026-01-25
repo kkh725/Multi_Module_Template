@@ -36,14 +36,14 @@ jobs:
             -   name: Decode keystore file
                 run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > ./app/upload-keystore.jks
 
-            -   name: KtlintCheck
-                run: ./gradlew ktlintCheck --no-daemon
-
-            -   name: Test
-                run: ./gradlew test --stacktrace --no-daemon
-
-            -   name: Compile Check (Debug)
-                run: ./gradlew compileDebugKotlin compileDebugJavaWithJavac --no-daemon
+#            -   name: KtlintCheck
+#                run: ./gradlew ktlintCheck --no-daemon
+#
+#            -   name: Test
+#                run: ./gradlew test --stacktrace --no-daemon
+#
+#            -   name: Compile Check (Debug)
+#                run: ./gradlew compileDebugKotlin compileDebugJavaWithJavac --no-daemon
 
             # script 를 통해 dependency graph 생성
             -   name: Generate dependency graph

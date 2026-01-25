@@ -7,7 +7,7 @@ const output = process.argv[3];  // docs/module-deps.md
 
 const data = JSON.parse(fs.readFileSync(input, "utf8"));
 
-// 👉 출력 디렉토리 보장
+// 출력 디렉토리 보장
 const outDir = path.dirname(output);
 if (!fs.existsSync(outDir)) {
   fs.mkdirSync(outDir, { recursive: true });
