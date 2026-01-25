@@ -10,14 +10,20 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(authRepository: AuthRepository) :
-    ViewModel() {
-    internal val autoLogin : StateFlow<Boolean?> = authRepository.autoLogin
-        .stateIn( // coldStream to hotStream
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000), // 중단 이후 5초간 유지. 화면 전환
-            initialValue = null
-        )
+class MainViewModel
+    @Inject
+    constructor(
+        authRepository: AuthRepository,
+    ) : ViewModel() {
+        // coldStream to hotStream
+        internal val autoLogin: StateFlow<Boolean?> =
+            authRepository.autoLogin
+                .stateIn(
+                    scope = viewModelScope,
+                    // 중단 이후 5초간 유지. 화면 전환
+                    started = SharingStarted.WhileSubscribed(5_000),
+                    initialValue = null,
+                )
 
-    internal fun initConfig() {}
-}
+        internal fun initConfig() {}
+    }

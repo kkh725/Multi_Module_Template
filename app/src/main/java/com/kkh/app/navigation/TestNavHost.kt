@@ -17,9 +17,10 @@ internal fun TestAppNavHost(
     NavDisplay(
         backStack = navBackStack,
         modifier = modifier,
-        entryProvider = entryProvider {
-            testEntry()
-            authEntry()
-        }
+        entryProvider =
+            entryProvider {
+                testEntry()
+                authEntry()
+            },
     )
 }

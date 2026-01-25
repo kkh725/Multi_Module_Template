@@ -19,8 +19,15 @@ class EffectHelper @Inject constructor() {
 }
 
 sealed class CommonEffect {
-    data class ShowSnackBar(val snackBarState: SnackBarState) : CommonEffect()
+    data class ShowSnackBar(
+        val snackBarState: SnackBarState
+    ) : CommonEffect()
+
     data object HideSnackBar : CommonEffect()
-    data class ShowBottomSheet(val content: @Composable () -> Unit) : CommonEffect()
+
+    data class ShowBottomSheet(
+        val content: @Composable () -> Unit
+    ) : CommonEffect()
+
     data object HideBottomSheet : CommonEffect()
 }

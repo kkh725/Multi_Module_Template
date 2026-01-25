@@ -6,6 +6,6 @@ interface HistoryDataSource {
     suspend fun getTimerHistories(
         userId: String,
         startDate: String,
-        endDate: String
+        endDate: String,
     ): HistoryResponse
 }

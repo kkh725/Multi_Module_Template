@@ -15,5 +15,5 @@ data class HistoryModel(
     val historyStatus: String,
     val failReason: String?,
     val startTime: String,
-    val endTime: String
+    val endTime: String,
 )

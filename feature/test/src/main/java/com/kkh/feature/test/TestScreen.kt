@@ -20,15 +20,16 @@ import com.kkh.common.effect.CommonEffect.ShowSnackBar
 import com.kkh.common.effect.SnackBarSideEffect
 import com.kkh.common.effect.getMessage
 import com.kkh.common.effect.handle
-import com.kkh.feature.test.contract.TestContract
 import com.kkh.common.ui.SnackBarState.Info
+import com.kkh.feature.test.contract.TestContract
 import com.skydoves.compose.stability.runtime.TraceRecomposition
 
 @Suppress("NonSkippableComposable")
 @TraceRecomposition
 @Composable
 fun TestRoute(
-    viewModel: TestViewModel = hiltViewModel()
+    modifier: Modifier = Modifier,
+    viewModel: TestViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -36,26 +37,31 @@ fun TestRoute(
     LaunchedEffect(viewModel) {
         viewModel.sideEffect.collect { effect ->
             when {
-                effect is SnackBarSideEffect -> effect.handle { _, _ ->
-                    val message = effect.getMessage(context)
+                effect is SnackBarSideEffect -> {
+                    effect.handle { _, _ ->
+                        val message = effect.getMessage(context)
 
-                    viewModel.effectHelper.sendEffect(ShowSnackBar(Info(message)))
+                        viewModel.effectHelper.sendEffect(ShowSnackBar(Info(message)))
+                    }
                 }
             }
         }
     }
 
-    viewModel.sendEvent(TestContract.TestEvent.OnNewMatchingCardClick(@Composable {
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .background(Color.Blue)
-        ) {
-            Button(onClick = { viewModel.sendEvent(TestContract.TestEvent.OnButtonClick) }) {
-                Text("bt")
-            }
-            Spacer(Modifier.height(100.dp))
-
-        }
-    }))
+    viewModel.sendEvent(
+        TestContract.TestEvent.OnNewMatchingCardClick(
+            @Composable {
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .background(Color.Blue),
+                ) {
+                    Button(onClick = { viewModel.sendEvent(TestContract.TestEvent.OnButtonClick) }) {
+                        Text("bt")
+                    }
+                    Spacer(Modifier.height(100.dp))
+                }
+            },
+        ),
+    )
 }

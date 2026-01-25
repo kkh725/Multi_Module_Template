@@ -24,12 +24,14 @@ object DataStoreModule {
     @Provides
     @Singleton
     @Named("token")
-    fun provideTokenDataStore(@ApplicationContext context: Context): DataStore<Preferences> =
-        context.tokenDataStore
+    fun provideTokenDataStore(
+        @ApplicationContext context: Context,
+    ): DataStore<Preferences> = context.tokenDataStore
 
     @Provides
     @Singleton
     @Named("user")
-    fun provideUserDataStore(@ApplicationContext context: Context): DataStore<Preferences> =
-        context.userDataStore
+    fun provideUserDataStore(
+        @ApplicationContext context: Context,
+    ): DataStore<Preferences> = context.userDataStore
 }

@@ -27,7 +27,8 @@ import com.kkh.common.ui.rememberTestBottomSheetScaffoldState
 @Composable
 fun TestBottomSheet(
     bottomSheetState: TestBottomSheetScaffoldState,
-    content: @Composable (PaddingValues) -> Unit
+    modifier: Modifier = Modifier,
+    content: @Composable (PaddingValues) -> Unit,
 ) {
     BottomSheetScaffold(
         scaffoldState = bottomSheetState.sheetState,
@@ -35,9 +36,10 @@ fun TestBottomSheet(
         sheetContent = {
             Column(modifier = Modifier.navigationBarsPadding()) {
                 Spacer(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(28.dp)
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .height(28.dp),
                 )
 
                 bottomSheetState.content.invoke()
@@ -52,7 +54,7 @@ fun TestBottomSheet(
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true, backgroundColor = 0xFF000000)
 @Composable
-fun TestBottomSheetPreview() {
+private fun TestBottomSheetPreview() {
     val testBottomSheetState = rememberTestBottomSheetScaffoldState()
 
     LaunchedEffect(Unit) {
@@ -60,7 +62,7 @@ fun TestBottomSheetPreview() {
         testBottomSheetState.updateContent {
             Column(
                 Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
             ) {
                 Text("Bottom Sheet Preview", color = Color.Black)
                 Spacer(Modifier.height(148.dp))
@@ -69,19 +71,20 @@ fun TestBottomSheetPreview() {
     }
 
     TestBottomSheet(
-        bottomSheetState = testBottomSheetState
-    ) { padding ->
-        Box(
-            Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .background(Color(0xFF000000))
-        ) {
-            Text(
-                text = "Main Content",
-                color = Color.White,
-                modifier = Modifier.padding(24.dp)
-            )
-        }
-    }
+        bottomSheetState = testBottomSheetState,
+        content = { padding ->
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .background(Color(0xFF000000)),
+            ) {
+                Text(
+                    text = "Main Content",
+                    color = Color.White,
+                    modifier = Modifier.padding(24.dp),
+                )
+            }
+        },
+    )
 }

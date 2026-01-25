@@ -10,11 +10,8 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class DataSourceModule {
-
+interface DataSourceModule {
     @Binds
     @Singleton
-    abstract fun bindHistoryDataSource(
-        impl: HistoryDataSourceImpl
-    ): HistoryDataSource
+    fun bindHistoryDataSource(impl: HistoryDataSourceImpl): HistoryDataSource
 }
