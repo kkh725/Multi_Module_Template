@@ -1,3 +1,5 @@
+import groovy.json.JsonOutput
+
 tasks.register('projectDependencyGraph') {
     doLast {
         def outputDir = new File(rootProject.layout.buildDirectory.asFile.get(), 'reports/dependency-graph')
@@ -125,5 +127,46 @@ tasks.register('projectDependencyGraph') {
             println("Install Graphviz: brew install graphviz")
             println("DOT file created at: ${dot.absolutePath}")
         }
+    }
+}
+
+tasks.register("dumpModuleDeps") {
+    group = "reporting"
+    description = "Dump module dependency graph as JSON for Mermaid"
+
+    doLast {
+        def result = [:].withDefault { [] }
+
+        def queue = [rootProject]
+        while (!queue.isEmpty()) {
+            def project = queue.remove(0)
+            queue.addAll(project.childProjects.values())
+
+            project.configurations.configureEach { config ->
+                config.dependencies
+                    .withType(ProjectDependency)
+                    .each { ProjectDependency dep ->
+                        def dependencyProject = rootProject.findProject(dep.path)
+                        if (dependencyProject != null && dependencyProject != project) {
+                            result[project.path] << dependencyProject.path
+                        }
+                    }
+            }
+
+            // 의존성 없는 모듈도 노드로 찍히게
+            if (!result.containsKey(project.path)) {
+                result[project.path] = []
+            }
+        }
+
+        // 중복 제거 + 정렬
+        result = result.collectEntries { k, v ->
+            [(k): v.unique().sort()]
+        }.sort()
+
+        def outFile = file("$buildDir/module-deps.json")
+        outFile.text = JsonOutput.prettyPrint(JsonOutput.toJson(result))
+
+        println "Wrote module deps to: $outFile"
     }
 }
