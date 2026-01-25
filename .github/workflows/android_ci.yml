@@ -70,12 +70,11 @@ jobs:
 
                     # commit -> push
                     git add docs/module-deps.md
-                    if git commit -m "[github-actions] update module dependency graph"; then
+                    git commit -m "[github-actions] update module dependency graph " || true
                     git push origin HEAD:${{ github.head_ref }}
-                    echo "Dependency graph updated and committed automatically."
 
-                    else
-                    echo "different with master, but not in local"
+                    echo "auto process success"
+
                     exit 0
                     fi
 

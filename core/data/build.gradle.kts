@@ -12,5 +12,6 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":core:common"))
     implementation(project(":core:domain"))
-    implementation(project(":core:database")) //커밋이 달라졌을까?
+    implementation(project(":core:database"))
+    implementation(project(":feature:test"))
 }
