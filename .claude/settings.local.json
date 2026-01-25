@@ -11,7 +11,9 @@
       "Bash(./gradlew:*)",
       "Bash(./gradlew clean build:*)",
       "Bash(gh run view:*)",
-      "Bash(gh api:*)"
+      "Bash(gh api:*)",
+      "mcp__github__get_pull_request",
+      "mcp__github__get_pull_request_files"
     ]
   }
 }

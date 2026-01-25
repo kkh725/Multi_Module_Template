@@ -53,17 +53,17 @@ jobs:
                     chmod +x scripts/update-dependency-graph.sh
                     ./scripts/update-dependency-graph.sh
 
-            # PR target module-deps vs local module-deps
+            # CI에서 생성된 그래프 vs PR target branch(master)의 그래프 비교
             -   name: Check for changes
                 run: |
                     git fetch origin ${{ github.base_ref }}
 
-                    if git diff --exit-code origin/${{ github.base_ref }}...HEAD -- docs/module-deps.md; then
+                    if git diff --exit-code origin/${{ github.base_ref }} -- docs/module-deps.md; then
                       echo "No changes in dependency graph"
                     else
                       echo "Dependency graph has changed. !! Update your module Graph !!"
                       echo ""
                       echo "Diff:"
-                      git diff origin/${{ github.base_ref }}...HEAD -- docs/module-deps.md
+                      git diff origin/${{ github.base_ref }} -- docs/module-deps.md
                       exit 1
                     fi
