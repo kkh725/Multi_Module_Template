@@ -1,0 +1,28 @@
+name: Check module dependency graph
+
+on:
+    pull_request:
+        branches: [ master, main, develop ]
+
+jobs:
+    deps-graph:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+
+            - uses: gradle/gradle-build-action@v2
+
+            - name: Generate dependency graph
+              run: |
+                  chmod +x scripts/update-dependency-graph.sh
+                  ./scripts/update-dependency-graph.sh
+
+            - name: Check for changes
+              run: |
+                  git fetch origin ${{ github.base_ref }}
+                  git diff --exit-code origin/${{ github.base_ref }} -- docs/module-deps.md
