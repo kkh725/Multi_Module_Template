@@ -61,7 +61,7 @@ jobs:
                     if git diff --exit-code origin/${{ github.base_ref }}...HEAD -- docs/module-deps.md; then
                       echo "No changes in dependency graph"
                     else
-                      echo "Dependency graph has changed"
+                      echo "Dependency graph has changed. !! Update your module Graph !!"
                       echo ""
                       echo "Diff:"
                       git diff origin/${{ github.base_ref }}...HEAD -- docs/module-deps.md
