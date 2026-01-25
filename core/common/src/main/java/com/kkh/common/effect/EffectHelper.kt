@@ -9,26 +9,24 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class EffectHelper
-    @Inject
-    constructor() {
-        private val _effectFlow = Channel<CommonEffect>(BUFFERED)
-        val effectFlow = _effectFlow.receiveAsFlow()
+class EffectHelper @Inject constructor() {
+    private val _effectFlow = Channel<CommonEffect>(BUFFERED)
+    val effectFlow = _effectFlow.receiveAsFlow()
 
-        fun sendEffect(effect: CommonEffect) {
-            _effectFlow.trySend(effect)
-        }
+    fun sendEffect(effect: CommonEffect) {
+        _effectFlow.trySend(effect)
     }
+}
 
 sealed class CommonEffect {
     data class ShowSnackBar(
-        val snackBarState: SnackBarState,
+        val snackBarState: SnackBarState
     ) : CommonEffect()
 
     data object HideSnackBar : CommonEffect()
 
     data class ShowBottomSheet(
-        val content: @Composable () -> Unit,
+        val content: @Composable () -> Unit
     ) : CommonEffect()
 
     data object HideBottomSheet : CommonEffect()

@@ -33,14 +33,14 @@ fun SnackBarSideEffect.handle(
     }
 }
 
-fun SnackBarSideEffect.getMessage(context: Context): String =
-    when (this) {
-        is SnackBarSideEffect.Matching -> {
-            if (count != null) {
-                context.getString(resId, count)
-            } else {
-                context.getString(resId)
-            }
+fun SnackBarSideEffect.getMessage(context: Context): String = when (this) {
+    is SnackBarSideEffect.Matching -> {
+        if (count != null) {
+            context.getString(resId, count)
+        } else {
+            context.getString(resId)
         }
-        else -> context.getString(resId)
     }
+
+    else -> context.getString(resId)
+}
