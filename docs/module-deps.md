@@ -17,7 +17,6 @@ graph TD
     _core_data --> _core_datastore
     _core_data --> _core_domain
     _core_data --> _core_network
-    _core_data --> _feature_auth
     _core_database[":core:database"]
     _core_database --> _core_common
     _core_datastore[":core:datastore"]
