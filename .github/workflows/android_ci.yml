@@ -11,36 +11,48 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v4
+            -   uses: actions/checkout@v4
 
-            - name: Set up JDK 21
-              uses: actions/setup-java@v4
-              with:
-                  java-version: '21'
-                  distribution: 'temurin'
+            -   name: Set up JDK 21
+                uses: actions/setup-java@v4
+                with:
+                    java-version: '21'
+                    distribution: 'temurin'
 
-            - name: Setup Gradle
-              uses: gradle/actions/setup-gradle@v4
-              with:
-                  add-job-summary: always
-                  # PR 빌드: 캐시 읽기, master push: 캐시 업데이트
-                  cache-read-only: ${{ github.event_name == 'pull_request' }}
+            -   name: Setup Gradle
+                uses: gradle/actions/setup-gradle@v4
+                with:
+                    add-job-summary: always
+                    # PR 빌드: 캐시 읽기, master push: 캐시 업데이트
+                    cache-read-only: ${{ github.event_name == 'pull_request' }}
 
-            - name: Grant execute permission for gradlew
-              run: chmod +x gradlew
+            -   name: Grant execute permission for gradlew
+                run: chmod +x gradlew
 
-            - name: Set up local.properties
-              run: |
-                  echo "KKH_SERVER_BASE_URL=${{ secrets.KKH_SERVER_BASE_URL }}" > local.properties
+            -   name: Set up local.properties
+                run: |
+                    echo "KKH_SERVER_BASE_URL=${{ secrets.KKH_SERVER_BASE_URL }}" > local.properties
 
-            - name: Decode keystore file
-              run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > ./app/upload-keystore.jks
+            -   name: Decode keystore file
+                run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > ./app/upload-keystore.jks
 
-            - name: KtlintCheck
-              run: ./gradlew ktlintCheck --no-daemon
+            -   name: KtlintCheck
+                run: ./gradlew ktlintCheck --no-daemon
 
-            - name: Test
-              run: ./gradlew test --stacktrace --no-daemon
+            -   name: Test
+                run: ./gradlew test --stacktrace --no-daemon
 
-            - name: Compile Check (Debug)
-              run: ./gradlew compileDebugKotlin compileDebugJavaWithJavac --no-daemon
+            -   name: Compile Check (Debug)
+                run: ./gradlew compileDebugKotlin compileDebugJavaWithJavac --no-daemon
+
+            # script 를 통해 dependency graph 생성
+            -   name: Generate dependency graph
+                run: |
+                    chmod +x scripts/update-dependency-graph.sh
+                    ./scripts/update-dependency-graph.sh
+
+            # 변화된 부분 확인
+            -   name: Check for changes
+                run: |
+                    git fetch origin ${{ github.base_ref }}
+                    git diff --exit-code origin/${{ github.base_ref }} -- docs/module-deps.md
