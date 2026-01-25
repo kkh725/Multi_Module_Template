@@ -2,7 +2,7 @@ name: Check module dependency graph
 
 on:
     pull_request:
-        branches: [ main, develop ]
+        branches: [ master, main, develop ]
 
 jobs:
     deps-graph:
