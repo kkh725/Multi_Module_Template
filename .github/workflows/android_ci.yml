@@ -51,8 +51,8 @@ jobs:
                     chmod +x scripts/update-dependency-graph.sh
                     ./scripts/update-dependency-graph.sh
 
-            # 변화된 부분 확인
+            # PR target module-deps vs local module-deps
             -   name: Check for changes
                 run: |
                     git fetch origin ${{ github.base_ref }}
-                    git diff --exit-code origin/${{ github.base_ref }} -- docs/module-deps.md
+                    git diff --exit-code -- docs/module-deps.md
