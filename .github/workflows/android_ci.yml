@@ -52,7 +52,18 @@ jobs:
                     ./scripts/update-dependency-graph.sh
 
             # PR target module-deps vs local module-deps
+            # PR target branch와 비교
             -   name: Check for changes
                 run: |
                     git fetch origin ${{ github.base_ref }}
-                    git diff --exit-code -- docs/module-deps.md
+
+                    # master에 파일이 없으면 자동 통과하지 않도록
+                    if git diff --exit-code origin/${{ github.base_ref }}...HEAD -- docs/module-deps.md; then
+                      echo "✅ No changes in dependency graph"
+                    else
+                      echo "❌ Dependency graph has changed or is new"
+                      echo ""
+                      echo "Diff:"
+                      git diff origin/${{ github.base_ref }}...HEAD -- docs/module-deps.md
+                      exit 1
+                    fi
