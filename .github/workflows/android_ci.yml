@@ -15,8 +15,6 @@ jobs:
 
         steps:
             -   uses: actions/checkout@v4
-                with:
-                    fetch-depth: 0
 
             -   name: Set up JDK 21
                 uses: actions/setup-java@v4
@@ -57,27 +55,23 @@ jobs:
                     ./scripts/update-dependency-graph.sh
 
             # CI에서 생성된 그래프 vs PR target branch(master)의 그래프 비교 후 auto 커밋
-            -   name: Check for changes
+            -   name: Check dependency graph update
                 run: |
                     git fetch origin ${{ github.base_ref }}
 
                     if git diff --quiet origin/${{ github.base_ref }} -- docs/module-deps.md; then
                     echo "No changes in dependency graph"
                     else
-                    echo "Dependency graph changed. Auto-committing updated graph..."
-
                     git config user.name "github-actions[bot]"
                     git config user.email "github-actions[bot]@users.noreply.github.com"
 
+                    # commit -> push
                     git add docs/module-deps.md
-                    git commit -m "[ci] update module dependency graph [ci skip]" || true
-
-                    # PR 브랜치로 push
+                    git commit -m "[github-actions] update module dependency graph " || true
                     git push origin HEAD:${{ github.head_ref }}
 
                     echo "Dependency graph updated and committed automatically."
 
-                    # 실패시키지 않음
                     exit 0
                     fi
 
