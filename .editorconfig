@@ -57,6 +57,11 @@ ktlint_standard_filename = disabled
 # 애노테이션 줄바꿈 규칙 끄기
 ktlint_standard_annotation = disabled
 
+
+#boolean isVisible의 네이밍
+ktlint_standard_boolean-property-naming = enabled
+
+
 # ----- Compose 전용 설정 -----
 # Composable 함수는 대문자 시작 허용
 ktlint_function_naming_ignore_when_annotated_with = Composable
@@ -72,3 +77,6 @@ compose_modifier_missing_ignore_annotated = Preview
 # Gradle DSL은 trailing comma 불필요
 ktlint_standard_trailing-comma-on-call-site = disabled
 ktlint_standard_trailing-comma-on-declaration-site = disabled
+
+
+

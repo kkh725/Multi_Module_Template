@@ -1,6 +1,6 @@
 package com.kkh.convention
 
-import com.android.build.gradle.LibraryExtension
+import com.android.build.api.dsl.LibraryExtension
 import com.kkh.convention.extensions.configureKotlinAndroid
 import com.kkh.convention.extensions.libs
 import org.gradle.api.Plugin
@@ -14,7 +14,6 @@ import org.gradle.kotlin.dsl.withType
 class AndroidLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         apply(plugin = "com.android.library")
-        apply(plugin = "org.jetbrains.kotlin.android")
         apply(plugin = "de.mannodermaus.android-junit5")
 
         // module에 test 관련 파일 없으면 테스트 진행하지 않는다.

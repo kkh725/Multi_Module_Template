@@ -1,7 +1,8 @@
 package com.kkh.convention.extensions
 
 
-import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
 import org.gradle.kotlin.dsl.configure
@@ -9,12 +10,12 @@ import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
 
 /**
- * Configure Compose-specific options
+ * Configure Compose-specific options for Application module
  */
 internal fun Project.configureAndroidCompose(
-    commonExtension: CommonExtension<*, *, *, *, *, *>,
+    applicationExtension: ApplicationExtension,
 ) {
-    commonExtension.apply {
+    applicationExtension.apply {
         buildFeatures {
             compose = true
         }
@@ -38,6 +39,43 @@ internal fun Project.configureAndroidCompose(
         }
     }
 
+    configureComposeCompiler()
+}
+
+/**
+ * Configure Compose-specific options for Library module
+ */
+internal fun Project.configureAndroidCompose(
+    libraryExtension: LibraryExtension,
+) {
+    libraryExtension.apply {
+        buildFeatures {
+            compose = true
+        }
+
+        dependencies {
+            add("ktlintRuleset", libs.findLibrary("ktlint-compose-rules").get())
+
+            val bom = libs.findLibrary("androidx-compose-bom").get()
+            "implementation"(platform(bom))
+            "androidTestImplementation"(platform(bom))
+            "implementation"(libs.findLibrary("androidx-material3").get())
+            "implementation"(libs.findLibrary("androidx-ui-tooling-preview").get())
+            "debugImplementation"(libs.findLibrary("androidx-ui-tooling").get())
+        }
+
+        testOptions {
+            unitTests {
+                // For Robolectric
+                isIncludeAndroidResources = true
+            }
+        }
+    }
+
+    configureComposeCompiler()
+}
+
+private fun Project.configureComposeCompiler() {
     extensions.configure<ComposeCompilerGradlePluginExtension> {
         fun Provider<String>.onlyIfTrue() = flatMap { provider { it.takeIf(String::toBoolean) } }
         fun Provider<*>.relativeToRootProject(dir: String) = map {
