@@ -2,7 +2,7 @@
 agp = "8.13.2"
 coreSplashscreen = "1.2.0"
 kotlin = "2.2.20"
-kotlinxSerializationJson = "1.9.0"
+kotlinxSerializationJson = "1.10.0"
 composeCompilerGradlePlugin = "2.2.20"
 coreKtx = "1.17.0"
 junit = "4.13.2"
@@ -43,9 +43,9 @@ room = "2.8.4"
 # stability
 stability = "0.6.6"
 
-# ktlint
+# ktlint, composeRule
 ktlint = "14.0.1"
-ktlintComposeRules = "0.4.28"
+ktlintComposeRules = "0.5.5"
 
 # immutable
 immutable = "0.4.0"
