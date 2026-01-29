@@ -48,9 +48,6 @@ jobs:
             -   name: Test
                 run: ./gradlew test --stacktrace --no-daemon
 
-            -   name: Compile Check (Debug)
-                run: ./gradlew compileDebugKotlin compileDebugJavaWithJavac --no-daemon
-
             -   name: Generate dependency graph
                 run: |
                     chmod +x scripts/update-dependency-graph.sh
