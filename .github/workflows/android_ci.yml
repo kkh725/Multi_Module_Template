@@ -40,7 +40,7 @@ jobs:
                 run: chmod +x gradlew
 
             -   name: Setup Secrets
-                uses: ./.github/actions/setup-secrets
+                uses: .github/workflows/setup-secrets
                 with:
                     server-base-url: ${{ secrets.KKH_SERVER_BASE_URL }}
                     keystore-base64: ${{ secrets.KEYSTORE_BASE64 }}
