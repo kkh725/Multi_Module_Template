@@ -37,7 +37,7 @@ jobs:
                     cache-read-only: true
 
             -   name: Setup empty config files
-                uses: ./.github/workflows/setup-config-files
+                uses: ./.github/actions/setup-config
 
             -   name: Generate dependency graph
                 run: |
