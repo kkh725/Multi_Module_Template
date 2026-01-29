@@ -1,39 +1,39 @@
 ```mermaid
 graph TD
-    app["app"]
-    app --> :core:common
-    app --> :core:data
-    app --> :core:designsystem
-    app --> :core:domain
-    app --> :core:navigation
-    app --> :feature:auth
-    app --> :feature:test
-    :core:common[":core:common"]
-    :core:data[":core:data"]
-    :core:data --> :core:common
-    :core:data --> :core:database
-    :core:data --> :core:datastore
-    :core:data --> :core:domain
-    :core:data --> :core:network
-    :core:database[":core:database"]
-    :core:database --> :core:common
-    :core:datastore[":core:datastore"]
-    :core:datastore --> :core:common
-    :core:designsystem[":core:designsystem"]
-    :core:designsystem --> :core:common
-    :core:domain[":core:domain"]
-    :core:navigation[":core:navigation"]
-    :core:network[":core:network"]
-    :core:network --> :core:common
-    :core:network --> :core:domain
-    :feature:auth[":feature:auth"]
-    :feature:auth --> :core:common
-    :feature:auth --> :core:designsystem
-    :feature:auth --> :core:domain
-    :feature:auth --> :core:navigation
-    :feature:test[":feature:test"]
-    :feature:test --> :core:common
-    :feature:test --> :core:designsystem
-    :feature:test --> :core:domain
-    :feature:test --> :core:navigation
+    _app[":app"]
+    _app --> _core_common
+    _app --> _core_data
+    _app --> _core_designsystem
+    _app --> _core_domain
+    _app --> _core_navigation
+    _app --> _feature_auth
+    _app --> _feature_test
+    _core_common[":core:common"]
+    _core_data[":core:data"]
+    _core_data --> _core_common
+    _core_data --> _core_database
+    _core_data --> _core_datastore
+    _core_data --> _core_domain
+    _core_data --> _core_network
+    _core_database[":core:database"]
+    _core_database --> _core_common
+    _core_datastore[":core:datastore"]
+    _core_datastore --> _core_common
+    _core_designsystem[":core:designsystem"]
+    _core_designsystem --> _core_common
+    _core_domain[":core:domain"]
+    _core_navigation[":core:navigation"]
+    _core_network[":core:network"]
+    _core_network --> _core_common
+    _core_network --> _core_domain
+    _feature_auth[":feature:auth"]
+    _feature_auth --> _core_common
+    _feature_auth --> _core_designsystem
+    _feature_auth --> _core_domain
+    _feature_auth --> _core_navigation
+    _feature_test[":feature:test"]
+    _feature_test --> _core_common
+    _feature_test --> _core_designsystem
+    _feature_test --> _core_domain
+    _feature_test --> _core_navigation
 ```
