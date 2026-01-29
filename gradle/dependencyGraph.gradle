@@ -137,8 +137,8 @@ tasks.register("dumpModuleDeps") {
     doLast {
         def result = [:].withDefault { [] }
 
-        // 제외할 부모 모듈들 (빈 문자열, core, feature 등)
-        def excludeModules = ['', 'core', 'feature'] as Set
+        // 제외할 부모 모듈들 (루트, core, feature 등)
+        def excludeModules = [':', ':core', ':feature'] as Set
 
         // 모듈 경로 유지 (:feature:home, :core:network 등)
         def simplifyPath = { String path ->
@@ -157,11 +157,16 @@ tasks.register("dumpModuleDeps") {
                 continue
             }
 
+            // implementation, api만 필터링 (compileOnly, kapt, test 등 제외)
+            def targetConfigs = ['implementation', 'api'] as Set
             project.configurations.configureEach { config ->
+                if (!targetConfigs.contains(config.name)) {
+                    return
+                }
                 config.dependencies
                     .withType(ProjectDependency)
                     .each { ProjectDependency dep ->
-                        def dependencyProject = rootProject.findProject(dep.path)
+                        def dependencyProject = dep.dependencyProject
                         if (dependencyProject != null && dependencyProject != project) {
                             def simplifiedDepPath = simplifyPath(dependencyProject.path)
                             // 제외 대상 의존성도 스킵
@@ -183,9 +188,18 @@ tasks.register("dumpModuleDeps") {
             [(k): v.unique().sort()]
         }.sort()
 
-        def outFile = file("$buildDir/module-deps.json")
-        outFile.text = JsonOutput.prettyPrint(JsonOutput.toJson(result))
+        def outputFile = file("$buildDir/module-deps.json")
 
-        println "Wrote module deps to: $outFile"
+        if (!outputFile.parentFile.exists()) {
+            outputFile.parentFile.mkdirs()
+        }
+
+        if (!outputFile.exists()) {
+            outputFile.text = "{}"
+        }
+
+        outputFile.text = JsonOutput.prettyPrint(JsonOutput.toJson(result))
+
+        println "Wrote module deps to: $outputFile"
     }
 }
