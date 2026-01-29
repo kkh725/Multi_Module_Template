@@ -166,7 +166,7 @@ tasks.register("dumpModuleDeps") {
                 config.dependencies
                     .withType(ProjectDependency)
                     .each { ProjectDependency dep ->
-                        def dependencyProject = dep.dependencyProject
+                        def dependencyProject = rootProject.findProject(dep.path)
                         if (dependencyProject != null && dependencyProject != project) {
                             def simplifiedDepPath = simplifyPath(dependencyProject.path)
                             // 제외 대상 의존성도 스킵
