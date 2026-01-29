@@ -33,7 +33,7 @@ jobs:
             -   name: Setup Gradle
                 uses: gradle/actions/setup-gradle@v4
                 with:
-                    generate-job-summary: false
+                    add-job-summary: false
                     cache-read-only: true
 
             -   name: Set up local.properties
