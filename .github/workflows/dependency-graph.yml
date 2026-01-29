@@ -36,12 +36,8 @@ jobs:
                     add-job-summary: false
                     cache-read-only: true
 
-            -   name: Set up local.properties
-                run: |
-                    echo "KKH_SERVER_BASE_URL=${{ secrets.KKH_SERVER_BASE_URL }}" > local.properties
-
-            -   name: Decode keystore file
-                run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > ./app/upload-keystore.jks
+            -   name: Setup empty config files
+                uses: ./.github/actions/setup-config-files
 
             -   name: Generate dependency graph
                 run: |

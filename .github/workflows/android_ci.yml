@@ -39,12 +39,11 @@ jobs:
             -   name: Grant execute permission for gradlew
                 run: chmod +x gradlew
 
-            -   name: Set up local.properties
-                run: |
-                    echo "KKH_SERVER_BASE_URL=${{ secrets.KKH_SERVER_BASE_URL }}" > local.properties
-
-            -   name: Decode keystore file
-                run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > ./app/upload-keystore.jks
+            -   name: Setup Secrets
+                uses: ./.github/actions/setup-secrets
+                with:
+                    server-base-url: ${{ secrets.KKH_SERVER_BASE_URL }}
+                    keystore-base64: ${{ secrets.KEYSTORE_BASE64 }}
 
             -   name: KtlintCheck
                 run: ./gradlew ktlintCheck --no-daemon
