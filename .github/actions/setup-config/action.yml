@@ -2,81 +2,81 @@ name: 'Setup Config Files'
 description: 'Setup local.properties and keystore files for Android build'
 
 inputs:
-  # local.properties
-  server-base-url:
-    required: false
-    default: ''
-  amplitude-api-key:
-    required: false
-    default: ''
-  piece-dev-base-url:
-    required: false
-    default: ''
-  piece-prod-base-url:
-    required: false
-    default: ''
-  piece-notice-url:
-    required: false
-    default: ''
-  piece-privacy-and-policy-url:
-    required: false
-    default: ''
-  piece-terms-of-use-url:
-    required: false
-    default: ''
-  piece-channel-talk-url:
-    required: false
-    default: ''
-  piece-market-url:
-    required: false
-    default: ''
-  google-web-client-id:
-    required: false
-    default: ''
+    # local.properties
+    server-base-url:
+        required: false
+        default: ''
+    amplitude-api-key:
+        required: false
+        default: ''
+    piece-dev-base-url:
+        required: false
+        default: ''
+    piece-prod-base-url:
+        required: false
+        default: ''
+    piece-notice-url:
+        required: false
+        default: ''
+    piece-privacy-and-policy-url:
+        required: false
+        default: ''
+    piece-terms-of-use-url:
+        required: false
+        default: ''
+    piece-channel-talk-url:
+        required: false
+        default: ''
+    piece-market-url:
+        required: false
+        default: ''
+    google-web-client-id:
+        required: false
+        default: ''
 
-  # keystore
-  keystore-base64:
-    required: false
-    default: ''
-  store-password:
-    required: false
-    default: ''
-  key-alias-release:
-    required: false
-    default: ''
-  key-password-release:
-    required: false
-    default: ''
-  key-alias-debug:
-    required: false
-    default: ''
-  key-password-debug:
-    required: false
-    default: ''
+    # keystore
+    keystore-base64:
+        required: false
+        default: ''
+    store-password:
+        required: false
+        default: ''
+    key-alias-release:
+        required: false
+        default: ''
+    key-password-release:
+        required: false
+        default: ''
+    key-alias-debug:
+        required: false
+        default: ''
+    key-password-debug:
+        required: false
+        default: ''
 
 runs:
-  using: 'composite'
-  steps:
-    - name: Set up local.properties
-      shell: bash
-      run: |
-        if [ -n "${{ inputs.server-base-url }}" ]; then
-          echo "KKH_SERVER_BASE_URL=${{ inputs.server-base-url }}" >> local.properties
-        else
-          touch local.properties
-        fi
+    using: 'composite'
+    steps:
+        -   name: Set up local.properties
+            shell: bash
+            run: |
+                if [ -n "${{ inputs.server-base-url || 'https://dummy.com'}}" ]; then
+                  echo "KKH_SERVER_BASE_URL=${{ inputs.server-base-url || 'https://dummy.com' }}" >> local.properties
+                else
+                  touch local.properties
+                fi
 
-    - name: Set up keystore
-      shell: bash
-      run: |
-        if [ -n "${{ inputs.keystore-base64 }}" ]; then
-          echo "${{ inputs.keystore-base64 }}" | base64 --decode > ./app/upload-keystore.jks
-          echo "STORE_FILE_PATH=./upload-keystore.jks" >> keystore.properties
-          echo "STORE_PASSWORD=${{ inputs.store-password }}" >> keystore.properties
-          echo "KEY_ALIAS_RELEASE=${{ inputs.key-alias-release }}" >> keystore.properties
-          echo "KEY_PASSWORD_RELEASE=${{ inputs.key-password-release }}" >> keystore.properties
-          echo "KEY_ALIAS_DEBUG=${{ inputs.key-alias-debug }}" >> keystore.properties
-          echo "KEY_PASSWORD_DEBUG=${{ inputs.key-password-debug }}" >> keystore.properties
-        else
-          touch keystore.properties
-        fi
+        -   name: Set up keystore
+            shell: bash
+            run: |
+                if [ -n "${{ inputs.keystore-base64 }}" ]; then
+                  echo "${{ inputs.keystore-base64 }}" | base64 --decode > ./app/upload-keystore.jks
+                  echo "STORE_FILE_PATH=./upload-keystore.jks" >> keystore.properties
+                else
+                  echo "STORE_FILE_PATH=dummy.jks" >> keystore.properties
+                fi
+                echo "STORE_PASSWORD=${{ inputs.store-password || 'dummy' }}" >> keystore.properties
+                echo "KEY_ALIAS_RELEASE=${{ inputs.key-alias-release || 'dummy' }}" >> keystore.properties
+                echo "KEY_PASSWORD_RELEASE=${{ inputs.key-password-release || 'dummy' }}" >> keystore.properties
+                echo "KEY_ALIAS_DEBUG=${{ inputs.key-alias-debug || 'dummy' }}" >> keystore.properties
+                echo "KEY_PASSWORD_DEBUG=${{ inputs.key-password-debug || 'dummy' }}" >> keystore.properties
