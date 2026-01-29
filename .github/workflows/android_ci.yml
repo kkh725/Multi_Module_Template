@@ -6,6 +6,10 @@ on:
     pull_request:
         branches: [ "master" ]
 
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
 jobs:
     check:
         runs-on: ubuntu-latest
@@ -47,29 +51,3 @@ jobs:
 
             -   name: Test
                 run: ./gradlew test --stacktrace --no-daemon
-
-            -   name: Generate dependency graph
-                run: |
-                    chmod +x scripts/update-dependency-graph.sh
-                    ./scripts/update-dependency-graph.sh
-
-            # CI에서 생성된 그래프 vs PR target branch(master)의 그래프 비교 후 auto 커밋
-            -   name: Check dependency graph update & auto commit
-                run: |
-                    git fetch origin ${{ github.base_ref }}
-
-                    if git diff --quiet origin/${{ github.base_ref }} -- docs/module-deps.md; then
-                    echo "No changes in dependency graph"
-                    else
-                    git config user.name "github-actions[bot]"
-                    git config user.email "github-actions[bot]@users.noreply.github.com"
-
-                    # commit -> push
-                    git add docs/module-deps.md
-                    git commit -m "[github-actions] update dependency graph " || true
-                    git push origin HEAD:${{ github.head_ref }}
-
-                    echo "auto process success"
-
-                    exit 0
-                    fi
