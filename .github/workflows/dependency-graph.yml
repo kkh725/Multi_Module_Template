@@ -1,0 +1,60 @@
+name: Dependency Graph
+
+on:
+    push:
+        branches:
+            - develop
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    update:
+        runs-on: ubuntu-latest
+
+        permissions:
+            contents: write
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Set up JDK 21
+              uses: actions/setup-java@v4
+              with:
+                  java-version: '21'
+                  distribution: 'temurin'
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+
+            - name: Setup Gradle
+              uses: gradle/actions/setup-gradle@v4
+              with:
+                  generate-job-summary: false
+                  cache-read-only: true
+
+            - name: Create empty config files
+              run: |
+                  touch local.properties
+                  touch keystore.properties
+
+            - name: Generate dependency graph
+              run: |
+                  chmod +x gradlew
+                  chmod +x scripts/update-dependency-graph.sh
+                  ./scripts/update-dependency-graph.sh
+
+            - name: Check and commit dependency graph
+              run: |
+                  git config user.name "github-actions[piece-bot]"
+                  git config user.email "github-actions[piece-bot]@users.noreply.github.com"
+                  git add docs/module-deps.md
+                  if git diff --cached --quiet; then
+                    echo "No changes in dependency graph. Skipping commit."
+                    exit 0
+                  fi
+                  git commit -m "[piece-bot] update dependency graph [skip ci]"
+                  git push
