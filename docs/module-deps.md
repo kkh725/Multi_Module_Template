@@ -1,6 +1,5 @@
 ```mermaid
 graph TD
-    _[":"]
     _app[":app"]
     _app --> _core_common
     _app --> _core_data
@@ -9,7 +8,6 @@ graph TD
     _app --> _core_navigation
     _app --> _feature_auth
     _app --> _feature_test
-    _core[":core"]
     _core_common[":core:common"]
     _core_data[":core:data"]
     _core_data --> _core_common
@@ -28,7 +26,6 @@ graph TD
     _core_network[":core:network"]
     _core_network --> _core_common
     _core_network --> _core_domain
-    _feature[":feature"]
     _feature_auth[":feature:auth"]
     _feature_auth --> _core_common
     _feature_auth --> _core_designsystem

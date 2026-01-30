@@ -137,25 +137,49 @@ tasks.register("dumpModuleDeps") {
     doLast {
         def result = [:].withDefault { [] }
 
+        // 제외할 부모 모듈들 (루트, core, feature 등)
+        def excludeModules = [':', ':core', ':feature'] as Set
+
+        // 모듈 경로 유지 (:feature:home, :core:network 등)
+        def simplifyPath = { String path ->
+            path
+        }
+
         def queue = [rootProject]
         while (!queue.isEmpty()) {
             def project = queue.remove(0)
             queue.addAll(project.childProjects.values())
 
+            def simplifiedProjectPath = simplifyPath(project.path)
+
+            // 제외 대상 모듈은 스킵
+            if (excludeModules.contains(simplifiedProjectPath)) {
+                continue
+            }
+
+            // implementation, api만 필터링 (compileOnly, kapt, test 등 제외)
+            def targetConfigs = ['implementation', 'api'] as Set
             project.configurations.configureEach { config ->
+                if (!targetConfigs.contains(config.name)) {
+                    return
+                }
                 config.dependencies
                     .withType(ProjectDependency)
                     .each { ProjectDependency dep ->
                         def dependencyProject = rootProject.findProject(dep.path)
                         if (dependencyProject != null && dependencyProject != project) {
-                            result[project.path] << dependencyProject.path
+                            def simplifiedDepPath = simplifyPath(dependencyProject.path)
+                            // 제외 대상 의존성도 스킵
+                            if (!excludeModules.contains(simplifiedDepPath)) {
+                                result[simplifiedProjectPath] << simplifiedDepPath
+                            }
                         }
                     }
             }
 
             // 의존성 없는 모듈도 노드로 찍히게
-            if (!result.containsKey(project.path)) {
-                result[project.path] = []
+            if (!result.containsKey(simplifiedProjectPath)) {
+                result[simplifiedProjectPath] = []
             }
         }
 
@@ -164,9 +188,18 @@ tasks.register("dumpModuleDeps") {
             [(k): v.unique().sort()]
         }.sort()
 
-        def outFile = file("$buildDir/module-deps.json")
-        outFile.text = JsonOutput.prettyPrint(JsonOutput.toJson(result))
+        def outputFile = file("$buildDir/module-deps.json")
 
-        println "Wrote module deps to: $outFile"
+        if (!outputFile.parentFile.exists()) {
+            outputFile.parentFile.mkdirs()
+        }
+
+        if (!outputFile.exists()) {
+            outputFile.text = "{}"
+        }
+
+        outputFile.text = JsonOutput.prettyPrint(JsonOutput.toJson(result))
+
+        println "Wrote module deps to: $outputFile"
     }
 }

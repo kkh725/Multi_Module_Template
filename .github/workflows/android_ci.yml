@@ -6,6 +6,10 @@ on:
     pull_request:
         branches: [ "master" ]
 
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
 jobs:
     check:
         runs-on: ubuntu-latest
@@ -35,44 +39,14 @@ jobs:
             -   name: Grant execute permission for gradlew
                 run: chmod +x gradlew
 
-            -   name: Set up local.properties
-                run: |
-                    echo "KKH_SERVER_BASE_URL=${{ secrets.KKH_SERVER_BASE_URL }}" > local.properties
-
-            -   name: Decode keystore file
-                run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > ./app/upload-keystore.jks
+            -   name: Setup Secrets
+                uses: ./.github/actions/setup-config
+                with:
+                    server-base-url: ${{ secrets.KKH_SERVER_BASE_URL }}
+                    keystore-base64: ${{ secrets.KEYSTORE_BASE64 }}
 
             -   name: KtlintCheck
                 run: ./gradlew ktlintCheck --no-daemon
 
             -   name: Test
                 run: ./gradlew test --stacktrace --no-daemon
-
-            -   name: Compile Check (Debug)
-                run: ./gradlew compileDebugKotlin compileDebugJavaWithJavac --no-daemon
-
-            -   name: Generate dependency graph
-                run: |
-                    chmod +x scripts/update-dependency-graph.sh
-                    ./scripts/update-dependency-graph.sh
-
-            # CI에서 생성된 그래프 vs PR target branch(master)의 그래프 비교 후 auto 커밋
-            -   name: Check dependency graph update & auto commit
-                run: |
-                    git fetch origin ${{ github.base_ref }}
-
-                    if git diff --quiet origin/${{ github.base_ref }} -- docs/module-deps.md; then
-                    echo "No changes in dependency graph"
-                    else
-                    git config user.name "github-actions[bot]"
-                    git config user.email "github-actions[bot]@users.noreply.github.com"
-
-                    # commit -> push
-                    git add docs/module-deps.md
-                    git commit -m "[github-actions] update dependency graph " || true
-                    git push origin HEAD:${{ github.head_ref }}
-
-                    echo "auto process success"
-
-                    exit 0
-                    fi
