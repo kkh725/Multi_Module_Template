@@ -5,7 +5,7 @@ inputs:
     # local.properties
     server-base-url:
         required: false
-        default: ''
+        default: 'https://dummy.com'
     amplitude-api-key:
         required: false
         default: ''
@@ -40,19 +40,19 @@ inputs:
         default: ''
     store-password:
         required: false
-        default: ''
+        default: 'dummy-store-password'
     key-alias-release:
         required: false
-        default: ''
+        default: 'dummy-release-alias'
     key-password-release:
         required: false
-        default: ''
+        default: 'dummy-release-password'
     key-alias-debug:
         required: false
-        default: ''
+        default: 'dummy-debug-alias'
     key-password-debug:
         required: false
-        default: ''
+        default: 'dummy-debug-password'
 
 runs:
     using: 'composite'
@@ -60,8 +60,8 @@ runs:
         -   name: Set up local.properties
             shell: bash
             run: |
-                if [ -n "${{ inputs.server-base-url || 'https://dummy.com'}}" ]; then
-                  echo "KKH_SERVER_BASE_URL=${{ inputs.server-base-url || 'https://dummy.com' }}" >> local.properties
+                if [ -n "${{ inputs.server-base-url }}" ]; then
+                  echo "KKH_SERVER_BASE_URL=${{ inputs.server-base-url }}" >> local.properties
                 else
                   touch local.properties
                 fi
@@ -75,8 +75,8 @@ runs:
                 else
                   echo "STORE_FILE_PATH=dummy.jks" >> keystore.properties
                 fi
-                echo "STORE_PASSWORD=${{ inputs.store-password || 'dummy' }}" >> keystore.properties
-                echo "KEY_ALIAS_RELEASE=${{ inputs.key-alias-release || 'dummy' }}" >> keystore.properties
-                echo "KEY_PASSWORD_RELEASE=${{ inputs.key-password-release || 'dummy' }}" >> keystore.properties
-                echo "KEY_ALIAS_DEBUG=${{ inputs.key-alias-debug || 'dummy' }}" >> keystore.properties
-                echo "KEY_PASSWORD_DEBUG=${{ inputs.key-password-debug || 'dummy' }}" >> keystore.properties
+                echo "STORE_PASSWORD=${{ inputs.store-password }}" >> keystore.properties
+                echo "KEY_ALIAS_RELEASE=${{ inputs.key-alias-release }}" >> keystore.properties
+                echo "KEY_PASSWORD_RELEASE=${{ inputs.key-password-release }}" >> keystore.properties
+                echo "KEY_ALIAS_DEBUG=${{ inputs.key-alias-debug }}" >> keystore.properties
+                echo "KEY_PASSWORD_DEBUG=${{ inputs.key-password-debug }}" >> keystore.properties
