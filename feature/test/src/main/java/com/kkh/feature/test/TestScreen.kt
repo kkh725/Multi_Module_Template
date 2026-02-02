@@ -53,7 +53,7 @@ fun TestRoute(
 
     viewModel.sendEvent(
         TestContract.TestEvent.OnNewMatchingCardClick(
-            @Composable {
+            content = {
                 Column(
                     Modifier
                         .fillMaxWidth()
@@ -64,7 +64,7 @@ fun TestRoute(
                     }
                     Spacer(Modifier.height(100.dp))
                 }
-            },
+            }
         ),
     )
 }
