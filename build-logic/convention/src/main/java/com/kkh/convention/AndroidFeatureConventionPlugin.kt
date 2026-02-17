@@ -29,9 +29,6 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 "implementation"(libs.findLibrary("hilt-navigation-compose").get())
                 "implementation"(libs.findLibrary("androidx-lifecycle-runtime-ktx").get())
                 "implementation"(libs.findLibrary("androidx-navigation3-runtime").get())
-                "implementation"(libs.findLibrary("androidx-navigation3-ui").get())
-                "implementation"(libs.findLibrary("androidx-core-ktx").get())
-                "implementation"(libs.findLibrary("retrofit-kotlin-serialization").get())
             }
         }
     }

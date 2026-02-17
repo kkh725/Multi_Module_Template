@@ -7,7 +7,6 @@ import com.kkh.convention.extensions.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.dependencies
 
 //그래들에서 클래스를 플러그인으로 설정할수 있게끔 함.
 class AndroidApplicationConventionPlugin: Plugin<Project> {
@@ -28,11 +27,6 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
                     versionCode = libs.findVersion("projectVersionCode").get().toString().toInt()
                     versionName = libs.findVersion("projectVersionName").get().toString()
                 }
-            }
-
-            dependencies {
-                "implementation"(libs.findLibrary("androidx-navigation3-runtime").get())
-                "implementation"(libs.findLibrary("androidx-navigation3-ui").get())
             }
         }
     }

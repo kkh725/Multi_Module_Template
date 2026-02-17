@@ -8,6 +8,4 @@ android {
     namespace = "com.kkh.database"
 }
 
-dependencies {
-    implementation(project(":core:common"))
-}
+dependencies {}
