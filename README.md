@@ -37,4 +37,4 @@
 - KSP
 
 ### Dependency Graph
-<img width="1309" height="707" alt="project dot" src="https://github.com/user-attachments/assets/07f17941-7bd1-4eb0-82ac-311e879dcdbb" />
+![Dependency Graph](docs/project.dot.png)

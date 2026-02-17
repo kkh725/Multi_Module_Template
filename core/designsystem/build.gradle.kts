@@ -11,8 +11,4 @@ dependencies {
     implementation(project(":core:common"))
 
     api(libs.androidx.material3)
-    api(libs.androidx.material3.adaptive)
-    api(libs.androidx.material3.navigationSuite)
-
-    implementation(libs.coil.kt.compose)
 }

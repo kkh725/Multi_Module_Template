@@ -15,7 +15,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.kkh.common.effect.CommonEffect.ShowSnackBar
 import com.kkh.common.effect.SnackBarSideEffect
 import com.kkh.common.effect.getMessage
@@ -32,10 +34,11 @@ fun TestRoute(
     viewModel: TestViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.state.collectAsStateWithLifecycle()
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
     val context = LocalContext.current
 
     LaunchedEffect(viewModel) {
-        viewModel.sideEffect.collect { effect ->
+        viewModel.sideEffect.flowWithLifecycle(lifecycle).collect { effect ->
             when {
                 effect is SnackBarSideEffect -> {
                     effect.handle { _, _ ->
@@ -50,7 +53,7 @@ fun TestRoute(
 
     viewModel.sendEvent(
         TestContract.TestEvent.OnNewMatchingCardClick(
-            @Composable {
+            content = {
                 Column(
                     Modifier
                         .fillMaxWidth()
@@ -61,7 +64,7 @@ fun TestRoute(
                     }
                     Spacer(Modifier.height(100.dp))
                 }
-            },
+            }
         ),
     )
 }

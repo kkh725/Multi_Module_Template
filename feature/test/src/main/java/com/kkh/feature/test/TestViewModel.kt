@@ -5,7 +5,7 @@ import com.kkh.common.base.BaseViewModel
 import com.kkh.common.effect.CommonEffect.ShowBottomSheet
 import com.kkh.common.effect.EffectHelper
 import com.kkh.common.effect.SnackBarSideEffect
-import com.kkh.designsystem.R
+import com.kkh.ui.R
 import com.kkh.domain.model.error.ErrorHelper
 import com.kkh.domain.repository.AuthRepository
 import com.kkh.feature.test.contract.TestContract.TestEvent

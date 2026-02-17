@@ -8,31 +8,31 @@ inputs:
         default: 'https://dummy.com'
     amplitude-api-key:
         required: false
-        default: ''
+        default: 'amplitude-api-key-dummy'
     piece-dev-base-url:
         required: false
-        default: ''
+        default: 'https://piece-dev-base-url-dummy.com'
     piece-prod-base-url:
         required: false
-        default: ''
+        default: 'https://piece-prod-base-url-dummy.com'
     piece-notice-url:
         required: false
-        default: ''
+        default: 'https://piece-notice-url-dummy.com'
     piece-privacy-and-policy-url:
         required: false
-        default: ''
+        default: 'https://piece-privacy-and-policy-url-dummy.com'
     piece-terms-of-use-url:
         required: false
-        default: ''
+        default: 'https://piece-terms-of-use-url-dummy.com'
     piece-channel-talk-url:
         required: false
-        default: ''
+        default: 'https://piece-channel-talk-url-dummy.com'
     piece-market-url:
         required: false
-        default: ''
+        default: 'https://piece-market-url-dummy.com'
     google-web-client-id:
         required: false
-        default: ''
+        default: 'google-web-client-id-dummy'
 
     # keystore
     keystore-base64:

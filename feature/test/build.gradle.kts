@@ -7,4 +7,6 @@ android {
     namespace = "com.kkh.feature.test"
 }
 
-dependencies {}
+dependencies {
+    implementation(project(":core:ui"))
+}
