@@ -1,2 +1,0 @@
-int string app_name 0x0
-int string core_designsystem_snackbar_match_accepted 0x0
