@@ -1,0 +1,3 @@
+com.kkh.ui
+string app_name
+string core_designsystem_snackbar_match_accepted
