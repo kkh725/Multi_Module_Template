@@ -12,20 +12,16 @@ graph TD
     _core_common[":core:common"]
     _core_data[":core:data"]
     _core_data --> _core_common
-    _core_data --> _core_database
     _core_data --> _core_datastore
     _core_data --> _core_domain
     _core_data --> _core_network
     _core_database[":core:database"]
-    _core_database --> _core_common
     _core_datastore[":core:datastore"]
-    _core_datastore --> _core_common
     _core_designsystem[":core:designsystem"]
     _core_designsystem --> _core_common
     _core_domain[":core:domain"]
     _core_navigation[":core:navigation"]
     _core_network[":core:network"]
-    _core_network --> _core_common
     _core_network --> _core_domain
     _core_ui[":core:ui"]
     _feature_auth[":feature:auth"]
