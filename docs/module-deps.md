@@ -6,6 +6,7 @@ graph TD
     _app --> _core_designsystem
     _app --> _core_domain
     _app --> _core_navigation
+    _app --> _core_ui
     _app --> _feature_auth
     _app --> _feature_test
     _core_common[":core:common"]
@@ -26,6 +27,7 @@ graph TD
     _core_network[":core:network"]
     _core_network --> _core_common
     _core_network --> _core_domain
+    _core_ui[":core:ui"]
     _feature_auth[":feature:auth"]
     _feature_auth --> _core_common
     _feature_auth --> _core_designsystem
@@ -36,4 +38,5 @@ graph TD
     _feature_test --> _core_designsystem
     _feature_test --> _core_domain
     _feature_test --> _core_navigation
+    _feature_test --> _core_ui
 ```
